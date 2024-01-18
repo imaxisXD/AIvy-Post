@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import createAuthClient from "@/utils/authClient";
 import { cookies } from "next/headers";
 import Client from "twitter-api-sdk";
+import { RedirectType, redirect } from "next/navigation";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -23,7 +24,6 @@ export async function GET(request: Request) {
       }
     );
   }
-  console.log(user?.email);
 
   try {
     const authClient = await createAuthClient();
@@ -38,28 +38,21 @@ export async function GET(request: Request) {
     const userDetails = await client.users.findMyUser({
       "user.fields": ["description", "name", "profile_image_url", "entities"],
     });
-
-    // await client.tweets.createTweet({
-    //   text: "HI 👋",
-    // });
-
     const { data, error, status, statusText } = await supabase
       .from("userdata")
       .insert({
+        email: user?.email,
         name: userDetails.data?.name,
         refresh_token: tokenResponse.token.refresh_token,
         access_token: tokenResponse.token.access_token,
         expires_at: tokenResponse.token.expires_at,
       });
     console.log(data, error, status, statusText);
-
-    return new Response(JSON.stringify(userDetails), {
-      status: 200, // OK status code
-    });
   } catch (error) {
     console.error("Auth Error | ", error);
     return new Response("Auth Error - Check logs for more information", {
       status: 500,
     });
   }
+  redirect("/dashboard/settings", RedirectType.replace);
 }

@@ -2,7 +2,7 @@
 import createAuthClient from "@/utils/authClient";
 import { generateSecureString } from "@/utils/pkce";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { RedirectType, redirect } from "next/navigation";
 
 export default async function twitterLinkAction() {
   const authClient = await createAuthClient();
@@ -20,7 +20,6 @@ export default async function twitterLinkAction() {
     code_challenge_method: "plain",
     code_challenge: secureString,
   });
-  console.log(secureString);
 
-  redirect(authUrl);
+  redirect(authUrl, RedirectType.push);
 }

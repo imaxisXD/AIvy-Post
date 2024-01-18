@@ -7,6 +7,7 @@ import {
   Edit3,
   Globe,
   LayoutDashboard,
+  ListPlusIcon,
   Menu,
   Newspaper,
   Settings,
@@ -21,27 +22,24 @@ import Image from "next/image";
 
 export default function Nav({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
-  const { id } = useParams() as { id?: string };
-
-  const [siteId, setSiteId] = useState<string | null>();
   console.log(segments);
 
   const tabs = [
     {
-      name: "Link",
-      href: "dashboard/",
+      name: "Home",
+      href: "/",
       isActive: segments.length === 0,
       icon: <LayoutDashboard width={18} />,
     },
     {
-      name: "Sites",
-      href: "dashboard/sites",
-      isActive: segments[0] === "sites",
-      icon: <Globe width={18} />,
+      name: "Create",
+      href: "http://localhost:3000/dashboard/create",
+      isActive: segments[0] === "create",
+      icon: <ListPlusIcon width={18} />,
     },
     {
       name: "Settings",
-      href: "dashboard/settings",
+      href: "http://localhost:3000/dashboard/settings",
       isActive: segments[0] === "settings",
       icon: <Settings width={18} />,
     },

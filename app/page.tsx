@@ -12,7 +12,12 @@ export default async function Home() {
   if (!session) {
     redirect("/login");
   }
-  const { data } = await supabase.from("userdata").select();
+  const { data, error, status, statusText } = await supabase
+    .from("userdata")
+    .select();
+
+  console.log(data, error, status, statusText);
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -27,7 +32,7 @@ export default async function Home() {
           Sign in
         </Link>
       )}
-
+      <p>{JSON.stringify(data)}</p>
       <p>{user?.email}</p>
     </main>
   );

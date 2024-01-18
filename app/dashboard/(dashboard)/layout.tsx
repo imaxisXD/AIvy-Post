@@ -1,8 +1,15 @@
 import { ReactNode, Suspense } from "react";
 // import Profile from "@/components/profile";
 import Nav from "@/components/nav";
+import { withProtectedRoute } from "@/utils/protectedRoute";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  await withProtectedRoute("/login");
+
   return (
     <div>
       <Nav>

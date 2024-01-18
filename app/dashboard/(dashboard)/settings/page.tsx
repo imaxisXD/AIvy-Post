@@ -5,6 +5,7 @@ import {
   LucideLinkedin,
   Twitter,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function SettingsPage() {
@@ -20,10 +21,15 @@ export default function SettingsPage() {
         <div>
           <Link
             href=""
-            className="hover:bg-opacity-50  flex justify-between items-center w-11/12 bg-[#222322] py-2 px-4 rounded-sm border-stone-500/20 border-x border-t"
+            className="hover:bg-opacity-50 flex justify-between items-center w-11/12 bg-[#222322] py-2 px-4 rounded-sm border-stone-500/20 border-x border-t"
           >
             <div className="flex items-center justify-center gap-3 text-sm">
-              <LucideLinkedin className="h-5 w-6" />
+              <Image
+                src="/linkedin-icon.svg"
+                alt="twitter"
+                height={26}
+                width={26}
+              />
               <span>LinkedIn</span>
             </div>
             <div className="border border-stone-600 text-stone-500 rounded-md px-3 py-1 text-sm">

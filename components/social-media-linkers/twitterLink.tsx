@@ -23,9 +23,9 @@ export default async function TwitterLink() {
   return (
     <form action={twitterAction}>
       <button
-        disabled={
-          user && userdata && user?.email === userdata[0]?.email ? true : false
-        }
+        // disabled={
+        //   user && userdata && user?.email === userdata[0]?.email ? true : false
+        // }
         type="submit"
         className="hover:bg-opacity-50 duration-150 flex justify-between items-center w-11/12 bg-[#222322] py-2 pl-5 px-4 rounded-sm border-stone-500/20 border"
       >

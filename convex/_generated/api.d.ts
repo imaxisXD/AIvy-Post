@@ -14,6 +14,10 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as https from "../https.js";
+import type * as init from "../init.js";
+import type * as lib_honoWithConvex from "../lib/honoWithConvex.js";
+import type * as messages from "../messages.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -23,7 +27,12 @@ import type {
  * const myFunctionReference = api.myModule.myFunction;
  * ```
  */
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  https: typeof https;
+  init: typeof init;
+  "lib/honoWithConvex": typeof lib_honoWithConvex;
+  messages: typeof messages;
+}>;
 export declare const api: FilterApi<
   typeof fullApi,
   FunctionReference<any, "public">

@@ -33,11 +33,23 @@ export async function GET(request: Request) {
       code_challenge: secureCookie?.value!,
     });
     const tokenResponse = await authClient.requestAccessToken(code);
+    // const refToken = await authClient.console.log("TOKEN-->", authClient.token);
+    //c0FqbkN6dnlzWFpvT2ZXRTktT3NIM19HMk1ZTzVvSVBJM042S250dEdwckhhOjE3MDQ5NzMzNDYxMDY6MTowOmF0OjE
+
+    // 'RkJyWFhoWmxIbTBfUFF5N1lOY2YydVJXVDFPUGZVYTlIU3FnTnUtY0ZrTG10OjE3MDU2OTE4MDUxMzY6MToxOmF0OjE'
+
     const client = new Client(authClient);
+    // await client.tweets.createTweet({
+    //   text: "Hi 💫",
+    // });
 
     const userDetails = await client.users.findMyUser({
       "user.fields": ["description", "name", "profile_image_url", "entities"],
     });
+    console.log("Token ->", tokenResponse);
+    const newToken = await authClient.refreshAccessToken();
+    console.log("NEW Token ->", newToken);
+
     const { data, error, status, statusText } = await supabase
       .from("userdata")
       .insert({

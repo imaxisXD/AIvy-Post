@@ -14,7 +14,7 @@ export default async function DashboardLayout({
     <StoreUserProvider>
       <Nav>
         <Suspense fallback={<div>Loading...</div>}>
-          {/* <Profile /> */}
+          <h1>ss</h1>
         </Suspense>
       </Nav>
       <div className="min-h-screen bg-white-project sm:pl-60 text-black">

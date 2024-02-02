@@ -1,9 +1,8 @@
 "use client";
-
 import Link from "next/link";
 import { LayoutDashboard, ListPlusIcon, Menu, Settings } from "lucide-react";
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 
 export default function Nav({ children }: { children: ReactNode }) {

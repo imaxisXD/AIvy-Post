@@ -2,6 +2,7 @@ import { api } from "@/convex/_generated/api";
 
 import { fetchQuery } from "convex/nextjs";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import Client from "twitter-api-sdk";
 import { TwitterApi } from "twitter-api-v2";
 
@@ -29,9 +30,10 @@ export async function GET(request: Request) {
   // console.log("Tweet--->", tweetsOfJack1);
   //   console.log("Tweet--->", tweetsOfJack2);
 
-  Response.json({
-    t1: "tweetsOfJack1",
-    // info: info,
-    // t2: tweetsOfJack2,
-  });
+  // Response.json({
+  //   t1: "tweetsOfJack1",
+  //   // info: info,
+  //   // t2: tweetsOfJack2,
+  // });
+  return NextResponse.json({ user: "sss" }, { status: 200 });
 }

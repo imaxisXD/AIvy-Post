@@ -1,16 +1,10 @@
 import TwitterLink from "@/components/social-media-linkers/twitterLink";
-import {
-  CheckCircleIcon,
-  Linkedin,
-  LucideLinkedin,
-  Twitter,
-} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function SettingsPage() {
   return (
-    <div className="flex max-w-screen-xl flex-col space-y-12 p-8 bg-[#1d1d1c] min-h-screen">
+    <main className="flex max-w-screen-xl flex-col space-y-12 p-8 bg-[#1d1d1c] min-h-screen">
       <div className="flex flex-col space-y-6">
         <div>
           <h2 className="text-2xl">Link Social Accounts</h2>
@@ -39,6 +33,6 @@ export default function SettingsPage() {
           <TwitterLink />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

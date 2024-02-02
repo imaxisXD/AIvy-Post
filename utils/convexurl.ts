@@ -6,5 +6,3 @@ export const convexSiteUrl = convexDeploymentUrl!.endsWith(".cloud")
       convexDeploymentUrl!.length - ".cloud".length
     ) + ".site"
   : convexDeploymentUrl;
-
-//https://qualified-pelican-434.convex.cloud

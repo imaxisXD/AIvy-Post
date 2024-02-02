@@ -1,23 +1,26 @@
 import { ReactNode, Suspense } from "react";
-// import Profile from "@/components/profile";
+
 import Nav from "@/components/nav";
-import { withProtectedRoute } from "@/utils/protectedRoute";
+
+import Feedbackbar from "@/components/feedbackbar";
+import StoreUserProvider from "@/utils/StoreUserProvider";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  await withProtectedRoute("/login");
-
   return (
-    <div>
+    <StoreUserProvider>
       <Nav>
         <Suspense fallback={<div>Loading...</div>}>
           {/* <Profile /> */}
         </Suspense>
       </Nav>
-      <div className="min-h-screen dark:bg-black sm:pl-60">{children}</div>
-    </div>
+      <div className="min-h-screen bg-white-project sm:pl-60 text-black">
+        <Feedbackbar />
+        {children}
+      </div>
+    </StoreUserProvider>
   );
 }

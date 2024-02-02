@@ -1,47 +1,55 @@
+"use client";
+import { api } from "@/convex/_generated/api";
 import twitterLinkAction from "@/utils/actions/twitterLinkAction";
-import { createClient } from "@/utils/supabase/server";
-import { CheckCircleIcon } from "lucide-react";
-import { cookies } from "next/headers";
 import Image from "next/image";
+import Linkedbutton from "../buttons/linkedbutton";
+import UnLinkedbutton from "../buttons/unlinkbutton";
+import LinkItButton from "../buttons/linkbutton";
+import { useUser } from "@clerk/clerk-react";
+import { useQuery } from "convex/react";
 
-export default async function TwitterLink() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+export default function TwitterLink() {
+  const { user } = useUser();
 
-  const { data: userdata } = await supabase
-    .from("userdata")
-    .select("email")
-    .eq("email", user?.email!);
+  console.log(user?.primaryEmailAddress?.toString());
+
+  // Convex fetch users data
+  const userData = useQuery(api.users.getUserDetails, {
+    userEmail: user?.primaryEmailAddress?.toString() || "",
+  });
+
+  const isUserLinked =
+    (user &&
+      userData &&
+      user?.primaryEmailAddress?.toString() === userData.email) ||
+    false;
 
   async function twitterAction() {
-    "use server";
-    await twitterLinkAction();
+    twitterLinkAction();
   }
+
   return (
     <form action={twitterAction}>
       <button
-        // disabled={
-        //   user && userdata && user?.email === userdata[0]?.email ? true : false
-        // }
+        disabled={false}
         type="submit"
-        className="hover:bg-opacity-50 duration-150 flex justify-between items-center w-11/12 bg-[#222322] py-2 pl-5 px-4 rounded-sm border-stone-500/20 border"
+        className={`hover:bg-opacity-50 duration-150 flex justify-between items-center w-11/12 py-2 pl-5 px-4 rounded-sm  border ${
+          isUserLinked
+            ? "bg-green-900/20 border-green-800"
+            : "bg-[#222322] border-stone-500/20"
+        }`}
       >
         <div className="flex items-center justify-center gap-4 text-sm">
           <Image src="/twitter.svg" alt="twitter" height={18} width={18} />
           <span>Twitter</span>
+          {isUserLinked && <Linkedbutton />}
         </div>
-        {user && userdata && user?.email === userdata[0]?.email ? (
-          <div className="border flex gap-1 items-center justify-center border-green-600 text-green-500 bg-[#051d10] rounded-md px-2 py-1 text-sm">
-            <CheckCircleIcon className="h-4 w-4" />
-            <span>Linked</span>
+        {isUserLinked ? (
+          <div className="flex flex-row gap-2">
+            <UnLinkedbutton />
           </div>
         ) : (
-          <div className="border border-stone-600 text-stone-500 rounded-md px-3 py-1 text-sm">
-            Disabled
-          </div>
+          <LinkItButton />
         )}
       </button>
     </form>

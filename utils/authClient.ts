@@ -6,7 +6,14 @@ async function createAuthClient() {
     client_id: process.env.TWITTER_CLIENT_ID!,
     client_secret: process.env.TWITTER_CLIENT_SECRET,
     callback: "http://127.0.0.1:3000/api/callback",
-    scopes: ["tweet.read", "users.read", "tweet.write", "offline.access"],
+    scopes: [
+      "tweet.read",
+      "users.read",
+      "tweet.write",
+      "offline.access",
+      "like.read",
+      "like.write",
+    ],
   });
 
   return authClient;

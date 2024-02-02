@@ -64,6 +64,6 @@ export async function GET(request: Request) {
     });
   }
   console.log("Redirecting ...");
-
-  redirect("http://127.0.0.1:3000/dashboard/settings", RedirectType.replace);
+  return NextResponse.json({ user }, { status: 200 });
+  // redirect("http://127.0.0.1:3000/dashboard/settings", RedirectType.replace);
 }

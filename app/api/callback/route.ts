@@ -1,11 +1,12 @@
 import createAuthClient from "@/utils/authClient";
 import { cookies } from "next/headers";
 import Client from "twitter-api-sdk";
-import { RedirectType, redirect } from "next/navigation";
-import { fetchMutation } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { ConvexHttpClient } from "convex/browser";
+
+const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,10 +15,6 @@ export async function GET(request: Request) {
   const cookieStore = cookies();
   const secureCookie = cookieStore.get("secure_cookie");
 
-  const { userId } = await auth();
-  if (!userId) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
   if (!state || state !== process.env.STATE || !code) {
     return new Response(
       "Auth Error - Code or State not present or doesn't match",
@@ -26,8 +23,12 @@ export async function GET(request: Request) {
       }
     );
   }
+  const authorization = await auth();
   const user = await currentUser();
-  console.log("_---------USER--> ", user);
+
+  if (!authorization || !user) {
+    return new Response("Unauthorized", { status: 403 });
+  }
 
   try {
     const authClient = await createAuthClient();
@@ -37,16 +38,14 @@ export async function GET(request: Request) {
       code_challenge: secureCookie?.value!,
     });
     const tokenResponse = await authClient.requestAccessToken(code);
-
     const client = new Client(authClient);
-
     const userDetails = await client.users.findMyUser({
       "user.fields": ["name", "id"],
     });
 
     try {
       //Convex insert users data
-      await fetchMutation(api.users.setUserDetails, {
+      const addedToDB = convex.mutation(api.users.setUserDetails, {
         name: userDetails.data?.name!,
         email: user?.primaryEmailAddressId!,
         t_access_token: tokenResponse.token.access_token!,
@@ -64,6 +63,5 @@ export async function GET(request: Request) {
     });
   }
   console.log("Redirecting ...");
-  return NextResponse.json({ user }, { status: 200 });
-  // redirect("http://127.0.0.1:3000/dashboard/settings", RedirectType.replace);
+  NextResponse.redirect("/dashboard/settings");
 }

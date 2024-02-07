@@ -16,13 +16,13 @@ export default function Nav({ children }: { children: ReactNode }) {
     },
     {
       name: "Create",
-      href: "http://localhost:3000/dashboard/create",
+      href: "/dashboard/create",
       isActive: segments[0] === "create",
       icon: <ListPlusIcon width={18} />,
     },
     {
       name: "Settings",
-      href: "http://localhost:3000/dashboard/settings",
+      href: "/dashboard/settings",
       isActive: segments[0] === "settings",
       icon: <Settings width={18} />,
     },

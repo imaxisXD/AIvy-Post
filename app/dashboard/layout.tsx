@@ -10,13 +10,11 @@ export default async function DashboardLayout({
 }) {
   return (
     <StoreUserProvider>
-      <Suspense fallback={<h1>Loading</h1>}>
-        <Nav>
-          <Suspense fallback={<div>Loading...</div>}>
-            <h1>ss</h1>
-          </Suspense>
-        </Nav>
-      </Suspense>
+      <Nav>
+        <Suspense fallback={<div>Loading...</div>}>
+          <h1>ss</h1>
+        </Suspense>
+      </Nav>
       <div className="min-h-screen bg-white-project sm:pl-60 text-black">
         <Feedbackbar />
         {children}

@@ -12,18 +12,17 @@
     "dev:backend": "convex dev"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^4.30.3",
-    "@clerk/nextjs": "^4.29.5",
+    "@clerk/nextjs": "^4.29.6",
     "@xixixao/uploadstuff": "^0.0.5",
     "convex": "^1.8.0",
-    "framer-motion": "^11.0.3",
     "llamaindex": "^0.0.48",
     "lucide-react": "^0.308.0",
     "next": "^14.1.0",
     "react": "^18",
     "react-dom": "^18",
     "twitter-api-sdk": "^1.2.1",
-    "twitter-api-v2": "^1.16.0"
+    "twitter-api-v2": "^1.16.0",
+    "valibot": "^0.28.1"
   },
   "devDependencies": {
     "@types/node": "^20",

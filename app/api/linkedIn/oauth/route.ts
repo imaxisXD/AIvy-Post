@@ -1,10 +1,12 @@
 import { api } from "@/convex/_generated/api";
 import { fetchAction } from "convex/nextjs";
 import { NextApiRequest } from "next";
+import { auth } from "@clerk/nextjs";
+import { getURL } from "@/utils/geturl";
 
+export const dynamic = "force-dynamic";
 export async function GET(request: NextApiRequest) {
   const { searchParams } = new URL(request.url!);
-
   const state = searchParams.get("state");
   const errorQuery = searchParams.get("error");
   const code = searchParams.get("code");
@@ -19,15 +21,23 @@ export async function GET(request: NextApiRequest) {
     const errorQuery = searchParams.get("error_description");
     console.log("Api Logs | Error in LinkedIn Api ", errorQuery);
     return Response.redirect(
-      `http://localhost:3000/dashboard/settings?error=${errorQuery}`,
+      `${getURL()}dashboard/settings?error=${errorQuery}`,
       302
     );
   }
   console.log("Api Logs | User Application State ", state);
   try {
-    const data = await fetchAction(api.oauth.getAccessTokenAndStoreIt, {
-      code,
-    });
+    const token = await getAuthToken();
+    if (token == null) {
+      return Response.redirect("/login", 302);
+    }
+    const data = await fetchAction(
+      api.oauth.getAccessTokenAndStoreIt,
+      {
+        code,
+      },
+      { token }
+    );
 
     return new Response(JSON.stringify(data), {
       status: 200,
@@ -38,8 +48,12 @@ export async function GET(request: NextApiRequest) {
       "An error occurred, please try again."
     );
     return Response.redirect(
-      `http://localhost:3000/dashboard/settings?message=${errorMessage}`,
+      `${getURL()}dashboard/settings?message=${errorMessage}`,
       302
     );
   }
+}
+
+export async function getAuthToken() {
+  return (await auth().getToken({ template: "convex" })) ?? undefined;
 }

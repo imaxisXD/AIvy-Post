@@ -1,4 +1,3 @@
-import { UserJSON } from "@clerk/nextjs/dist/types/server";
 import { Doc, Id } from "./_generated/dataModel";
 import {
   QueryCtx,
@@ -8,76 +7,23 @@ import {
 } from "./_generated/server";
 import { v } from "convex/values";
 
-// Add user tokens to Database
-// export const setUserDetails = mutation({
-//   args: {
-//     name: v.string(),
-//     email: v.string(),
-//     t_access_token: v.string(),
-//     t_refresh_token: v.string(),
-//     t_expires: v.number(),
-//     t_id: v.string(),
-//   },
-//   handler: async (ctx, args) => {
-//     const identity = await ctx.auth.getUserIdentity();
-//     if (identity === null) {
-//       return ["User is not Authurised", null];
-//     }
-//     const user = await ctx.db
-//       .query("users")
-//       .filter((q) => q.eq(q.field("email"), args.email))
-//       .first();
-
-//     if (!user) {
-//       console.log(
-//         `User with email ${args.email} added to the database succesfully.`
-//       );
-//       return await ctx.db.insert("users-token", {
-//         userId: identity.subject,
-//       });
-//     } else {
-//       console.log(
-//         `User with email ${args.email} already exists in the database.\n Updating the tokens of the user.`
-//       );
-//       return await ctx.db.patch(user._id, {
-//         twitter_access_token: args.t_access_token,
-//         twitter_refresh_token: args.t_refresh_token,
-//         twitter_token_expiry_time: args.t_expires,
-//       });
-//     }
-//   },
-// });
-
-// Return current users details
-export const getUserDetails = query({
-  args: { userEmail: v.string() },
-  handler: async (ctx, arg) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (identity === null) {
-      return ["User is not Authurised", null];
-    }
-    const userDetails = await ctx.db
-      .query("users")
-      .filter((q) => q.eq(q.field("email"), arg.userEmail))
-      .first();
-    return userDetails;
-  },
-});
-
-// Add new user to DB or do nothing for existing user
+/**
+ * Mutation to add a new user to the database or update existing user details if necessary.
+ * @param {QueryCtx} ctx - The query context.
+ * @returns {Promise<Id<"users">>} The ID of the stored or updated user.
+ */
 export const store = mutation({
   args: {},
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
+      console.error("store mutation called without authentication");
       throw new Error("Called store user without authentication present");
     }
     // Check if we've already stored this identity before.
     const existingUser = await ctx.db
       .query("users")
-      .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier)
-      )
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.subject))
       .unique();
 
     // If we've seen this identity before but the name has changed, patch the value.
@@ -93,14 +39,19 @@ export const store = mutation({
     // If it's a new identity, create a new `User`.
     return await ctx.db.insert("users", {
       name: identity.name!,
-      tokenIdentifier: identity.tokenIdentifier,
+      tokenIdentifier: identity.subject,
       email: identity.email!,
       pictureUrl: identity.pictureUrl,
     });
   },
 });
 
-//Add access token to DB
+/**
+ * Internal mutation to store or update a user's access token in the database.
+ * @param {QueryCtx} ctx - The query context.
+ * @param {Object} args - The arguments containing token data.
+ * @returns {Promise<Id<"usersToken">>} The ID of the stored or updated token.
+ */
 export const storeToken = internalMutation({
   args: {
     data: v.object({
@@ -110,21 +61,27 @@ export const storeToken = internalMutation({
     }),
   },
   async handler(ctx, args) {
+    // Ensure a current user is available for associating the token.
     const user = await mustGetCurrentUser(ctx);
+    console.log(`Storing token for user: ${user._id} and ${user.email}`);
+
+    // Check if an access token already exists for the user.
     const existingUserToken = await ctx.db
       .query("usersToken")
       .withIndex("by_userDocId", (q) => q.eq("userId", user._id))
       .unique();
 
-    // If access token present then update it
+    // Update the existing token if user is present.
     if (existingUserToken) {
+      console.log(`Updating token for user: ${user._id}`);
       return await ctx.db.patch(existingUserToken._id, {
         lin_access_token: args.data.access_token,
         lin_token_expiry: args.data.expires_in,
       });
     }
 
-    // If not present then add to database
+    // Insert a new token record if not present.
+    console.log(`Inserting new token for user: ${user._id}`);
     return await ctx.db.insert("usersToken", {
       userId: user._id,
       lin_access_token: args.data.access_token,
@@ -133,39 +90,87 @@ export const storeToken = internalMutation({
   },
 });
 
-// Helpers
+// Helper functions below are used to query user details from the database.
+
+/**
+ * Queries a user by their token identifier.
+ * @param {QueryCtx} ctx - The query context.
+ * @param {string} clerkUserId - The user's token identifier.
+ * @returns {Promise<Doc<"users"> | null>} The user document or null if not found.
+ **/
 export async function userQuery(
   ctx: QueryCtx,
   clerkUserId: string
 ): Promise<Doc<"users"> | null> {
+  console.log(`Querying user by token: ${clerkUserId}`);
   return await ctx.db
     .query("users")
     .withIndex("by_token", (q) => q.eq("tokenIdentifier", clerkUserId))
     .unique();
 }
 
+/**
+ * Queries a user by their document ID.
+ * @param {QueryCtx} ctx - The query context.
+ * @param {Id<"users">} id - The document ID of the user.
+ * @returns {Promise<Doc<"users"> | null>} The user document or null if not found.
+ */
 export async function userById(
   ctx: QueryCtx,
   id: Id<"users">
 ): Promise<Doc<"users"> | null> {
+  console.log(`Querying user by ID: ${id}`);
   return await ctx.db.get(id);
 }
 
+/**
+ * Retrieves the current authenticated user's details.
+ * @param {QueryCtx} ctx - The query context.
+ * @returns {Promise<Doc<"users"> | null>} The current user's document or null if not authenticated.
+ */
 async function getCurrentUser(ctx: QueryCtx): Promise<Doc<"users"> | null> {
-  console.log("Coming here");
-
+  console.log("Retrieving current user");
   const identity = await ctx.auth.getUserIdentity();
-  console.log("XXXXXXXXXX----->", JSON.stringify(identity));
-  if (identity === null) {
+
+  if (!identity) {
+    console.warn("No current user identity found");
     return null;
   }
-  return await userQuery(ctx, identity.tokenIdentifier);
+  return await userQuery(ctx, identity.subject);
 }
 
+/**
+ * Ensures a current user is available and throws an error if not.
+ * @param {QueryCtx} ctx - The query context.
+ * @returns {Promise<Doc<"users">>} The current user's document.
+ * @throws {Error} If no current user can be retrieved.
+ */
 export async function mustGetCurrentUser(ctx: QueryCtx): Promise<Doc<"users">> {
-  console.log("Coming here");
-
+  console.log("Ensuring a current user is available");
   const userRecord = await getCurrentUser(ctx);
   if (!userRecord) throw new Error("Can't get current user");
   return userRecord;
 }
+
+/**
+ * Queries current user's details based on their email.
+ * @param {QueryCtx} ctx - The query context.
+ * @param {Object} arg - The arguments containing the user's email.
+ * @returns {Promise<Doc<"users"> | ["User is not Authorized", null]>} The user's document or unauthorized message.
+ */
+export const getUserThroughEmail = query({
+  args: { userEmail: v.string() },
+  handler: async (ctx, arg) => {
+    console.log(`Querying user details through email: ${arg.userEmail}`);
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      console.warn("User is not authorized");
+      return ["User is not Authorized", null];
+    }
+    const userDetails = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("email"), arg.userEmail))
+      .first();
+    return userDetails;
+  },
+});

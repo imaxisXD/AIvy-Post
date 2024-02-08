@@ -7,7 +7,6 @@ export default function LinkedInConnectButton() {
     "use server";
     const redirectUrl = process.env.LINKEDIN_REDIRECT_URL;
     const oauthApi = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${redirectUrl}&state=${process.env.STATE}&scope=profile%20email%20w_member_social`;
-    console.log("Log | OAUTH URL : ", oauthApi);
     redirect(oauthApi, RedirectType.push);
   }
 

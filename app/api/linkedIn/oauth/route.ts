@@ -33,22 +33,30 @@ export async function GET(request: NextApiRequest) {
     }
     const data = await fetchAction(
       api.oauth.getAccessTokenAndStoreIt,
-      {
-        code,
-      },
+      { code },
       { token }
     );
-
-    return new Response(JSON.stringify(data), {
-      status: 200,
-    });
+    if (data) {
+      return Response.redirect(
+        `${getURL()}dashboard/settings?sucess=connected`,
+        302
+      );
+    } else {
+      const errorMessage = encodeURIComponent(
+        "Encountered error while connecting your account, please try again."
+      );
+      return Response.redirect(
+        `${getURL()}dashboard/settings?error=${errorMessage}`,
+        302
+      );
+    }
   } catch (error) {
     console.log("Api Logs | Error in getting access token api");
     const errorMessage = encodeURIComponent(
       "An error occurred, please try again."
     );
     return Response.redirect(
-      `${getURL()}dashboard/settings?message=${errorMessage}`,
+      `${getURL()}dashboard/settings?error=${errorMessage}`,
       302
     );
   }

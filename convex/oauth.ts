@@ -1,4 +1,4 @@
-import { httpAction, internalAction } from "./_generated/server";
+import { action, httpAction, internalAction } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v } from "convex/values";
 import { FunctionReturnType } from "convex/server";
@@ -10,57 +10,57 @@ const ResponseSchema = object({
   scope: string(),
 });
 
-export const linkedInOAuth = httpAction(async (ctx, request) => {
-  const urlString = request.url;
-  const url = new URL(urlString);
+// export const linkedInOAuth = httpAction(async (ctx, request) => {
+//   const urlString = request.url;
+//   const url = new URL(urlString);
 
-  const params = url.searchParams;
-  const state = params.get("state");
-  const errorQuery = params.get("error");
-  const code = params.get("code");
+//   const params = url.searchParams;
+//   const state = params.get("state");
+//   const errorQuery = params.get("error");
+//   const code = params.get("code");
 
-  if (state != process.env.STATE || state == null || code == null) {
-    return new Response("Unauthorized", {
-      status: 401,
-      statusText: "Unauthorized",
-    });
-  }
-  if (errorQuery) {
-    const errorQuery = params.get("error_description");
-    console.log("Api Logs | Error in LinkedIn Api ", errorQuery);
-    return Response.redirect(
-      `http://localhost:3000/dashboard/settings?message=${errorQuery}`,
-      302
-    );
-  }
-  console.log("Api Logs | User Application State ", state);
-  try {
-    const data: FunctionReturnType<
-      typeof internal.oauth.getAccessTokenAndStoreIt
-    > = await ctx.runAction(internal.oauth.getAccessTokenAndStoreIt, {
-      code,
-    });
+//   if (state != process.env.STATE || state == null || code == null) {
+//     return new Response("Unauthorized", {
+//       status: 401,
+//       statusText: "Unauthorized",
+//     });
+//   }
+//   if (errorQuery) {
+//     const errorQuery = params.get("error_description");
+//     console.log("Api Logs | Error in LinkedIn Api ", errorQuery);
+//     return Response.redirect(
+//       `http://localhost:3000/dashboard/settings?message=${errorQuery}`,
+//       302
+//     );
+//   }
+//   console.log("Api Logs | User Application State ", state);
+//   try {
+//     const data: FunctionReturnType<
+//       typeof internal.oauth.getAccessTokenAndStoreIt
+//     > = await ctx.runAction(internal.oauth.getAccessTokenAndStoreIt, {
+//       code,
+//     });
 
-    return new Response(JSON.stringify(data), {
-      status: 200,
-    });
-  } catch (error) {
-    console.log("Api Logs | Error in getting access token api");
-    const errorMessage = encodeURIComponent(
-      "An error occurred, please try again."
-    );
-    return Response.redirect(
-      `http://localhost:3000/dashboard/settings?message=${errorMessage}`,
-      302
-    );
-  }
-});
+//     return new Response(JSON.stringify(data), {
+//       status: 200,
+//     });
+//   } catch (error) {
+//     console.log("Api Logs | Error in getting access token api");
+//     const errorMessage = encodeURIComponent(
+//       "An error occurred, please try again."
+//     );
+//     return Response.redirect(
+//       `http://localhost:3000/dashboard/settings?message=${errorMessage}`,
+//       302
+//     );
+//   }
+// });
 
 /*
 The below function fetches the access token and save it to database
 */
 
-export const getAccessTokenAndStoreIt = internalAction({
+export const getAccessTokenAndStoreIt = action({
   args: {
     code: v.string(),
   },

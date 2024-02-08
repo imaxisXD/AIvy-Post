@@ -7,10 +7,10 @@ export default function LinkedInConnectButton() {
     "use server";
     const redirectUrl = process.env.LINKEDIN_REDIRECT_URL;
     const oauthApi = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${redirectUrl}&state=${process.env.STATE}&scope=profile%20email%20w_member_social`;
-    console.log(oauthApi);
-
+    console.log("Log | OAUTH URL : ", oauthApi);
     redirect(oauthApi, RedirectType.push);
   }
+
   return (
     <div className="flex justify-between items-center w-full py-3 px-6 rounded-sm border-t border-sky-500/20 bg-sky-500/20">
       <div className="flex items-center justify-center gap-2 text-sm">

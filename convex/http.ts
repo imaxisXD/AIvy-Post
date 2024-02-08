@@ -1,14 +1,14 @@
 import { httpRouter } from "convex/server";
 
-import { linkedInOAuth } from "./oauth";
+// import { linkedInOAuth } from "./oauth";
 
 const http = httpRouter();
 
-http.route({
-  path: "/api/oauth/linkedin",
-  method: "GET",
-  handler: linkedInOAuth,
-});
+// http.route({
+//   path: "/api/oauth/linkedin",
+//   method: "GET",
+//   handler: linkedInOAuth,
+// });
 
 // Define additional routes
 // http.route({

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import ConvexClientProvider from "../utils/ConvexClientProvider";
 import { Urbanist } from "next/font/google";
 
 const gorst = localFont({
@@ -13,7 +12,6 @@ const gorst = localFont({
 
 const urban = Urbanist({
   subsets: ["latin"],
-  display: "swap",
   variable: "--font-urban",
 });
 
@@ -32,9 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${gorst.className} ${urban.variable}`}>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
-      </body>
+      <body className={`${gorst.className} ${urban.variable}`}>{children}</body>
     </html>
   );
 }

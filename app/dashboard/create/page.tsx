@@ -1,7 +1,13 @@
+"use client";
 import Uploadbox from "@/components/uploadbox";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
 import { Plus } from "lucide-react";
 
 export default function Create() {
+  const userAccessTokenExist = useQuery(api.users.getUserToken);
+  console.log(userAccessTokenExist);
+
   return (
     <main className="px-8 min-h-screen text-black ">
       <h1 className="font-urban font-extrabold text-4xl pt-8 pb-2 text-black">

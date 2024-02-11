@@ -90,6 +90,49 @@ export const storeToken = internalMutation({
   },
 });
 
+/**
+ * Query to get a user's access token in the database.
+ * @param {QueryCtx} ctx - The query context.
+ * @param {Object} args - The arguments containing userID.
+ * @returns {Promise<Id<"usersToken">> || null} The ID of the stored or updated token.
+ */
+export const getUserToken = query({
+  async handler(ctx) {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      console.error("store mutation called without authentication");
+      throw new Error("Called store user without authentication present");
+    }
+    const user = await mustGetCurrentUser(ctx);
+
+    const userRecord = await ctx.db
+      .query("usersToken")
+      .withIndex("by_userDocId", (q) => q.eq("userId", user._id))
+      .unique();
+
+    return userRecord;
+  },
+});
+
+/**
+ * Delete user's access token in the database.
+ * @returns {void} The ID of the stored or updated token.
+ */
+export const deleteUserToken = mutation({
+  async handler(ctx) {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      console.error("store mutation called without authentication");
+      throw new Error("Called store user without authentication present");
+    }
+    const user = await mustGetCurrentUser(ctx);
+    const userRecord = await ctx.db
+      .query("usersToken")
+      .withIndex("by_userDocId", (q) => q.eq("userId", user._id))
+      .unique();
+    await ctx.db.delete(userRecord?._id!);
+  },
+});
 // Helper functions below are used to query user details from the database.
 
 /**

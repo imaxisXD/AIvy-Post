@@ -1,9 +1,16 @@
 "use client";
 import { ReactNode, useEffect } from "react";
-import { Authenticated, ConvexReactClient, useMutation } from "convex/react";
+import {
+  AuthLoading,
+  Authenticated,
+  ConvexReactClient,
+  useMutation,
+  useQuery,
+} from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ClerkProvider, useAuth, useUser } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
+import { Loading } from "@/components/loading";
 
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
@@ -18,19 +25,18 @@ export default function ConvexClientProvider({
     >
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <Authenticated>
-          <h1 className="text-9xl text-white">xxxxAuth xxxxx</h1>
           <StoreUserInDatabase />
+          {children}
         </Authenticated>
-        <h1 className="text-9xl text-white">Notttt</h1>
-        {children}
+        <AuthLoading>
+          <Loading />
+        </AuthLoading>
       </ConvexProviderWithClerk>
     </ClerkProvider>
   );
 }
 
 function StoreUserInDatabase() {
-  console.log("called");
-
   const { user } = useUser();
   const storeUser = useMutation(api.users.store);
   useEffect(() => {

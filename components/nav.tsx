@@ -1,6 +1,12 @@
 "use client";
 import Link from "next/link";
-import { LayoutDashboard, ListPlusIcon, Menu, Settings } from "lucide-react";
+import {
+  LayoutDashboard,
+  ListPlusIcon,
+  Menu,
+  Settings,
+  SquarePen,
+} from "lucide-react";
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
@@ -84,15 +90,27 @@ export default function Nav({ children }: { children: ReactNode }) {
             </Link>
           </div>
           <div className="grid gap-1">
+            <Link
+              scroll={true}
+              key={"campaign"}
+              href="/dashboard/campaign"
+              className="group border-[#e698ff] font-medium text-purple-900 background-animate border-opacity-80 bg-gradient-to-r from-[#FDCBF1] to-[#E0D1F7] border flex items-center space-x-3 rounded-md px-2 py-1.5 transition-all duration-150 ease-in-out shadow-[#e598ff7b] shadow-inner drop-shadow-md hover:bg-gradient-radial hover:font-semibold active:font-extrabold"
+            >
+              <SquarePen width={18} strokeWidth={2} />
+              <span className="text-sm font-urban tracking-wide drop-shadow-md shadow-purple-950">
+                New Campaign
+              </span>
+            </Link>
             {tabs.map(({ name, href, isActive, icon }) => (
               <Link
+                scroll={true}
                 key={name}
                 href={href}
                 className={`flex items-center space-x-3 ${
                   isActive
-                    ? "border-stone-200 border-b text-black bg-stone-300"
-                    : ""
-                } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out hover:bg-stone-200 active:bg-stone-300 `}
+                    ? "border-[#e698ff] border-b text-purple-700 bg-white "
+                    : "text-stone-600 hover:text-black hover:bg-stone-200"
+                } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out`}
               >
                 {icon}
                 <span className="text-sm font-medium">{name}</span>
@@ -101,7 +119,7 @@ export default function Nav({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div>
-          <div className="my-2 border-t border-stone-200 " />
+          <div className="my-2 border-t border-stone-200" />
           {children}
         </div>
       </div>

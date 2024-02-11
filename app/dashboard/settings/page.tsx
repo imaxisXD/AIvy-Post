@@ -1,8 +1,4 @@
-import LinkItButton from "@/components/buttons/linkbutton";
 import LinkedInConnectButton from "@/components/social-media-linkers/linkedin-connect-btn";
-import TwitterLink from "@/components/social-media-linkers/twitterLink";
-import Image from "next/image";
-import Link from "next/link";
 
 export default function SettingsPage() {
   return (
@@ -25,7 +21,6 @@ export default function SettingsPage() {
             </p>
           </div>
           <LinkedInConnectButton />
-          {/* <TwitterLink /> */}
         </section>
       </div>
     </main>

@@ -54,7 +54,7 @@ export default function Nav({ children }: { children: ReactNode }) {
       <div
         className={`transform ${
           showSidebar ? "w-full translate-x-0" : "-translate-x-full"
-        } fixed z-10 flex h-full flex-col justify-between border-r border-stone-200 bg-stone-100 p-4 transition-all sm:w-60 sm:translate-x-0`}
+        } fixed z-10 flex h-full flex-col justify-between bg-stone-100 p-4 transition-all sm:w-60 sm:translate-x-0`}
       >
         <div className="grid gap-2">
           <div className="flex items-center space-x-2 rounded-lg px-2 py-1.5">
@@ -94,7 +94,7 @@ export default function Nav({ children }: { children: ReactNode }) {
               scroll={true}
               key={"campaign"}
               href="/dashboard/campaign"
-              className="group border-[#e698ff] font-medium text-purple-900 background-animate border-opacity-80 bg-gradient-to-r from-[#FDCBF1] to-[#E0D1F7] border flex items-center space-x-3 rounded-md px-2 py-1.5 transition-all duration-150 ease-in-out shadow-[#e598ff7b] shadow-inner drop-shadow-md hover:bg-gradient-radial hover:font-semibold active:font-extrabold"
+              className="group border-[#e698ff] font-medium text-purple-900 background-animate border-opacity-80 bg-gradient-to-r from-[#FDCBF1] to-[#E0D1F7] border flex items-center space-x-3 rounded-md px-2 py-1.5 transition-all duration-150 ease-in-out shadow-[#e598ff7b] shadow-inner drop-shadow-md hover:bg-gradient-to-t hover:font-semibold active:font-extrabold"
             >
               <SquarePen width={18} strokeWidth={2} />
               <span className="text-sm font-urban tracking-wide drop-shadow-md shadow-purple-950">

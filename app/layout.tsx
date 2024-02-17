@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Urbanist } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 
 const gorst = localFont({
   src: "../fonts/gorst.ttf",
@@ -31,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${gorst.className} ${urban.variable}`}>{children}</body>
+      <Toaster />
     </html>
   );
 }

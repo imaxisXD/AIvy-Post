@@ -12,13 +12,12 @@ export default async function DashboardLayout({
     <Suspense>
       <ConvexClientProvider>
         <Nav>
-          <Suspense fallback={<div>Loading...</div>}>
-            <h1>ss</h1>
-          </Suspense>
+          <Suspense fallback={<div>Loading...</div>}></Suspense>
         </Nav>
-        <div className="min-h-screen bg-white-project sm:pl-60 text-black">
+        <div className="min-h-screen bg-white-project sm:pl-60 text-black bg-stone-100 relative">
+          <div className="fixed top-0 h-14 w-full bg-stone-100 z-10" />
           <Feedbackbar />
-          {children}
+          <div className="bg-[#fefffe]">{children}</div>
         </div>
       </ConvexClientProvider>
     </Suspense>

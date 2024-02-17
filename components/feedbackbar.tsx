@@ -3,7 +3,7 @@ import Link from "next/link";
 
 function Feedbackbar() {
   return (
-    <nav className="h-14 border-y sticky z-10 top-0 bg-white flex items-center gap-2 px-3 justify-end text-sm">
+    <header className="h-14 border sticky z-10 top-3 bg-white flex items-center gap-2 px-3 justify-end text-sm rounded-tl-3xl">
       <button className="flex items-center justify-center gap-1.5 px-2 py-1 border rounded-lg">
         <MessageSquareShare className="h-4 w-4 text-grey-project" />
         Feedback
@@ -19,7 +19,7 @@ function Feedbackbar() {
         <Bell className="h-4 w-4 " />
         {/* <BellRing /> */}
       </button>
-    </nav>
+    </header>
   );
 }
 

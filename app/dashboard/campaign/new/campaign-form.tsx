@@ -14,11 +14,10 @@ import { useState } from "react";
 import { campaignFormSubmit } from "@/utils/actions";
 import { Label } from "@/components/ui/label";
 import Timezone from "@/components/timezone";
-
-type LoginForm = {
-  email: string;
-  password: string;
-};
+import CampaignSubmitButton from "./campaign-submit";
+import { toast } from "sonner";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export default function CampaignForm() {
   const today = new Date();
@@ -79,10 +78,12 @@ export default function CampaignForm() {
     "11:00 PM",
     "11:30 PM",
   ];
-
+  async function serverAction(formData: FormData) {
+    campaignFormSubmit(formData);
+  }
   return (
     <form
-      action={campaignFormSubmit}
+      action={serverAction}
       className="border-[#d8d8de] border pt-4 pb-6 rounded-b-lg border-x flex-col gap-3 items-start justify-between bg-[#fefffe] px-10 w-full drop-shadow-md"
     >
       <div className="flex flex-col gap-1.5 py-3 mb-1">
@@ -96,14 +97,13 @@ export default function CampaignForm() {
           placeholder="My Campaign"
           type="text"
           pattern="[A-Za-z]+"
-          title="Name should only contain letters. No numbers or emojis allowed."
+          title="Name should only contain letters. No numbers, spaces or emojis allowed."
           name="name"
           id="name"
           minLength={3}
           maxLength={10}
           required
-          className="text-sm drop-shadow-sm
-          focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md w-11/12 focus:outline-none focus:ring-1 focus:ring-[#d8d8de] transition-all duration-150 ease-linear"
+          className="text-sm drop-shadow-sm max-w-52 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-150 ease-linear"
         />
       </div>
       <div className="flex flex-col gap-1.5 py-3 mb-1">
@@ -178,7 +178,7 @@ export default function CampaignForm() {
           name="postingTime"
           id="postingTime"
           required
-          className="text-sm shadow-sm cursor-pointer text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md w-28 focus:outline-none focus:ring-1 focus:ring-[#d8d8de] transition-all duration-150 ease-linear"
+          className="text-sm shadow-sm hover:bg-accent cursor-pointer text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md w-28 focus:outline-none focus:ring-1 focus:ring-[#d8d8de] transition-all duration-150 ease-linear"
         >
           <option value="" disabled selected hidden>
             Click here
@@ -191,14 +191,9 @@ export default function CampaignForm() {
         </select>
       </div>
       <Timezone />
-      <button
-        type="submit"
-        className="px-3 mt-4 py-1.5 rounded-md bg-gradient-to-b from-purple-500 to-purple-600 text-white focus:ring-2 focus:ring-purple-400 hover:shadow-xl transition-all duration-200"
-      >
-        <span className="drop-shadow-md text-white text-sm">
-          Create campaign
-        </span>
-      </button>
+      <div className="flex justify-end items-center w-full">
+        <CampaignSubmitButton />
+      </div>
     </form>
   );
 }

@@ -51,7 +51,7 @@ export const store = mutation({
  * @param {QueryCtx} ctx - The query context.
  * @param {Object} args - The arguments containing token data.
  * @returns {Promise<Id<"usersToken">>} The ID of the stored or updated token.
- */
+ **/
 export const storeToken = internalMutation({
   args: {
     data: v.object({

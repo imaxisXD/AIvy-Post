@@ -3,7 +3,12 @@ import * as v from "valibot";
 import { parse } from "date-fns";
 import { convertTimeToUTC } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
-import { toast } from "sonner";
+
+import { api } from "@/convex/_generated/api";
+
+import { fetchMutation } from "convex/nextjs";
+import { getAuthToken } from "@/app/api/linkedIn/oauth/route";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 const CAMPAIGNFORMSCHEMA = v.object({
@@ -23,7 +28,7 @@ export async function campaignFormSubmit(formData: FormData) {
   const { userId } = auth();
   if (!userId) {
     console.error("You must be signed in to create a campaign");
-    redirect("http://localhost:3000/");
+    redirect("/login");
   }
   const validatedFormData = v.safeParse(CAMPAIGNFORMSCHEMA, {
     name: formData.get("name"),
@@ -51,10 +56,26 @@ export async function campaignFormSubmit(formData: FormData) {
       formData.get("postingTime")?.toString()!,
       formData.get("timezone")?.toString()!
     );
-    console.log(formData);
-    console.log("UTC", resultUTC);
+    const token = await getAuthToken();
+    const result = await fetchMutation(
+      api.campaign.insertCampaignData,
+      {
+        endDate: formData.get("startDate")?.toString()!,
+        name: formData.get("name")?.toString()!,
+        postingTime: formData.get("postingTime")?.toString()!,
+        startDate: formData.get("startDate")?.toString()!,
+        timezone: formData.get("timezone")?.toString()!,
+        utc_postingTime: resultUTC.toISOString(),
+      },
+      { token }
+    );
+    if (result.status != "success") {
+      //
+    }
   } else {
     console.log(validatedFormData.issues);
-    redirect("http://localhost:3000/dashboard/campaign/new");
+    redirect("/dashboard/campaign/new");
   }
+
+  redirect("/dashboard/campaign/");
 }

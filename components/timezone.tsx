@@ -28,7 +28,7 @@ function Timezone() {
         required
         value={parseTimezone(timezone).value}
         onChange={handleTimezoneChange} // Update the state when the user selects a different option
-        className="text-sm cursor-pointer shadow-sm text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md w-11/12 focus:outline-none focus:ring-1 focus:ring-[#d8d8de] transition-all duration-150 ease-linear"
+        className="text-sm hover:bg-accent cursor-pointer shadow-sm text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md max-w-96 focus:outline-none focus:ring-1 focus:ring-[#d8d8de] transition-all duration-150 ease-linear"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>

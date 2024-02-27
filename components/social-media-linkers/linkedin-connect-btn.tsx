@@ -1,4 +1,3 @@
-import { getAuthToken } from "@/app/api/linkedIn/oauth/route";
 import { api } from "@/convex/_generated/api";
 import { fetchMutation, fetchQuery } from "convex/nextjs";
 import { PlusCircleIcon } from "lucide-react";
@@ -6,6 +5,7 @@ import Image from "next/image";
 import { RedirectType, redirect } from "next/navigation";
 import UnLinkedbutton from "../buttons/unlinkbutton";
 import { revalidatePath } from "next/cache";
+import { getAuthToken } from "@/lib/utils";
 
 export default async function LinkedInConnectButton() {
   const token = await getAuthToken();

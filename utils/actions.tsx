@@ -1,14 +1,13 @@
 "use server";
 import * as v from "valibot";
 import { parse } from "date-fns";
-import { convertTimeToUTC } from "@/lib/utils";
+import { convertTimeToUTC, getAuthToken } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 
 import { api } from "@/convex/_generated/api";
 
 import { fetchMutation } from "convex/nextjs";
-import { getAuthToken } from "@/app/api/linkedIn/oauth/route";
-import { revalidatePath } from "next/cache";
+
 import { redirect } from "next/navigation";
 
 const CAMPAIGNFORMSCHEMA = v.object({
@@ -60,7 +59,7 @@ export async function campaignFormSubmit(formData: FormData) {
     const result = await fetchMutation(
       api.campaign.insertCampaignData,
       {
-        endDate: formData.get("startDate")?.toString()!,
+        endDate: formData.get("endDate")?.toString()!,
         name: formData.get("name")?.toString()!,
         postingTime: formData.get("postingTime")?.toString()!,
         startDate: formData.get("startDate")?.toString()!,

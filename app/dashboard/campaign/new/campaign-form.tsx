@@ -18,6 +18,7 @@ import CampaignSubmitButton from "./campaign-submit";
 import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { CampaignNavList } from "@/components/campaign-nav-list";
 
 export default function CampaignForm() {
   const today = new Date();

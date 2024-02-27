@@ -10,6 +10,8 @@ import {
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
+import { Separator } from "./ui/separator";
+import { CampaignNavList } from "./campaign-nav-list";
 
 export default function Nav({ children }: { children: ReactNode }) {
   const segments = useSelectedLayoutSegments();
@@ -117,9 +119,15 @@ export default function Nav({ children }: { children: ReactNode }) {
               </Link>
             ))}
           </div>
+          <Separator className="" />
+          <span className="text-xs text-stone-500 pl-2 pt-2 flex items-center justify-start gap-3">
+            CAMPAIGNS
+          </span>
+          <CampaignNavList />
         </div>
         <div>
           <div className="my-2 border-t border-stone-200" />
+          <h1>Hellllllllloooooo</h1>
           {children}
         </div>
       </div>

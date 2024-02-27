@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import CampaignForm from "./campaign-form";
 
 function NewCampaignPage() {
@@ -13,7 +12,6 @@ function NewCampaignPage() {
           <br /> You can manage the duration of the campaign.
         </p>
       </div>
-      {/* <div className="text-[#d8d8de] w-5 h-0.5 bg-inherit" /> */}
       <CampaignForm />
     </section>
   );

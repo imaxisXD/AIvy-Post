@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { zonedTimeToUtc } from "date-fns-tz";
 import { format, parse } from "date-fns";
+import { auth } from "@clerk/nextjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,4 +37,22 @@ export function convertTimeToUTC(
   console.log("API Logs | Time in UTC sent to cron : ", utcTime);
 
   return utcTime;
+}
+
+export function getRandomColor() {
+  const colors = [
+    "purple",
+    "blue",
+    "green",
+    "yellow",
+    "pink",
+    "emerald",
+    "sky",
+  ];
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+}
+
+export async function getAuthToken() {
+  return (await auth().getToken({ template: "convex" })) ?? undefined;
 }

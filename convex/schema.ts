@@ -11,12 +11,6 @@ export default defineSchema({
     lin_access_token: v.string(),
     lin_token_expiry: v.number(),
   }).index("by_userDocId", ["userId"]),
-  userCampaigns: defineTable({
-    campaignId: v.id("campaigns"),
-    userId: v.id("users"),
-  })
-    .index("by_campaignId", ["campaignId"])
-    .index("by_userId", ["userId"]),
   campaigns: defineTable({
     name: v.string(),
     startDate: v.string(),
@@ -24,7 +18,12 @@ export default defineSchema({
     postingTime: v.string(),
     timezone: v.string(),
     utc_postingTime: v.string(),
-  }),
+    userId: v.id("users"),
+    campaignId: v.string(),
+    campaignIsActive: v.string(),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_campaignId", ["campaignId"]),
   users: defineTable({
     name: v.string(),
     tokenIdentifier: v.string(),

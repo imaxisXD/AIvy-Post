@@ -1,8 +1,8 @@
 import { api } from "@/convex/_generated/api";
 import { fetchAction } from "convex/nextjs";
 import { NextApiRequest } from "next";
-import { auth } from "@clerk/nextjs";
 import { getURL } from "@/utils/geturl";
+import { getAuthToken } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 export async function GET(request: NextApiRequest) {
@@ -60,8 +60,4 @@ export async function GET(request: NextApiRequest) {
       302
     );
   }
-}
-
-export async function getAuthToken() {
-  return (await auth().getToken({ template: "convex" })) ?? undefined;
 }

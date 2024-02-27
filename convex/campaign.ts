@@ -1,6 +1,6 @@
 import { QueryCtx, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { mustGetCurrentUser } from "./users";
+import { getCurrentUser, mustGetCurrentUser } from "./users";
 
 /**
  * Mutation to store campaign details .
@@ -84,10 +84,15 @@ export const getCurrentUserActiveCampaigns = query({
   async handler(ctx) {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      console.error("Campaign mutation called without authentication");
-      throw new Error("Campaign mutation called without authentication");
+      console.error("Campaign query called without authentication");
+      throw new Error("Campaign query called without authentication");
     }
-    const user = await mustGetCurrentUser(ctx);
+    const user = await getCurrentUser(ctx);
+
+    if (!user) {
+      console.log("New user, havent created any campaigns");
+      return null;
+    }
 
     const campaignList = await ctx.db
       .query("campaigns")
@@ -95,7 +100,7 @@ export const getCurrentUserActiveCampaigns = query({
       .filter((q) => q.eq(q.field("campaignIsActive"), "active"))
       .collect();
 
-    if (campaignList.length < 1) {
+    if (campaignList.length == 0) {
       return null;
     }
     return campaignList;

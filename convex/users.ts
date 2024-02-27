@@ -171,7 +171,9 @@ export async function userById(
  * @param {QueryCtx} ctx - The query context.
  * @returns {Promise<Doc<"users"> | null>} The current user's document or null if not authenticated.
  */
-async function getCurrentUser(ctx: QueryCtx): Promise<Doc<"users"> | null> {
+export async function getCurrentUser(
+  ctx: QueryCtx
+): Promise<Doc<"users"> | null> {
   console.log("Retrieving current user");
   const identity = await ctx.auth.getUserIdentity();
 

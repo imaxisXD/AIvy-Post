@@ -8,12 +8,12 @@ import {
   SquarePen,
 } from "lucide-react";
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import { CampaignNavList } from "./campaign-nav-list";
 
-export default function Nav({ children }: { children: ReactNode }) {
+export default function Nav() {
   const segments = useSelectedLayoutSegments();
   const tabs = [
     {
@@ -128,7 +128,6 @@ export default function Nav({ children }: { children: ReactNode }) {
         <div>
           <div className="my-2 border-t border-stone-200" />
           <h1>Hellllllllloooooo</h1>
-          {children}
         </div>
       </div>
     </nav>

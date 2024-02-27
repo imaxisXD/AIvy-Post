@@ -6,12 +6,17 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useUser } from "@clerk/clerk-react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { Puzzle, Settings2, Square } from "lucide-react";
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
 
 function CampaignNavList() {
+  const { isLoading, isAuthenticated } = useConvexAuth();
+  const { user } = useUser();
+  console.log("User", user);
+  console.log("Auth", isAuthenticated);
   const CampaignArray = useQuery(api.campaign.getCurrentUserActiveCampaigns);
   const segments = useSelectedLayoutSegments();
   console.log(segments);

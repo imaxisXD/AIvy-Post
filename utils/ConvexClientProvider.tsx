@@ -5,7 +5,6 @@ import {
   Authenticated,
   ConvexReactClient,
   useMutation,
-  useQuery,
 } from "convex/react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ClerkProvider, useAuth, useUser } from "@clerk/nextjs";

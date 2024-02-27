@@ -1,11 +1,10 @@
 import { api } from "@/convex/_generated/api";
 import { fetchAction } from "convex/nextjs";
-import { NextApiRequest } from "next";
 import { getURL } from "@/utils/geturl";
 import { getAuthToken } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
-export async function GET(request: NextApiRequest) {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url!);
   const state = searchParams.get("state");
   const errorQuery = searchParams.get("error");

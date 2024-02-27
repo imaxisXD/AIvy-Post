@@ -1,8 +1,5 @@
 "use client";
-import Uploadbox from "@/components/uploadbox";
-import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
-import { Plus } from "lucide-react";
+// import Uploadbox from "@/components/uploadbox";
 
 export default function Create() {
   return (
@@ -15,7 +12,7 @@ export default function Create() {
         the content to create compelling social media posts for you.
       </h2>
 
-      <Uploadbox />
+      {/* <Uploadbox /> */}
 
       <h2>How It Works</h2>
       <ol>

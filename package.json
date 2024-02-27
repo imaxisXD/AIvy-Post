@@ -23,7 +23,7 @@
     "@xixixao/uploadstuff": "^0.0.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "convex": "^1.8.0",
+    "convex": "^1.9.1",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "lucide-react": "^0.308.0",

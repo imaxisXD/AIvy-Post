@@ -36,12 +36,14 @@ export const store = mutation({
       }
       return existingUser._id;
     }
+
     // If it's a new identity, create a new `User`.
     return await ctx.db.insert("users", {
       name: identity.name!,
       tokenIdentifier: identity.subject,
       email: identity.email!,
       pictureUrl: identity.pictureUrl,
+      creditToken: 10000,
     });
   },
 });
@@ -63,7 +65,7 @@ export const storeToken = internalMutation({
   async handler(ctx, args) {
     // Ensure a current user is available for associating the token.
     const user = await mustGetCurrentUser(ctx);
-    console.log(`Storing token for user: ${user._id} and ${user.email}`);
+    console.debug(`Storing token for user: ${user._id} and ${user.email}`);
 
     // Check if an access token already exists for the user.
     const existingUserToken = await ctx.db
@@ -73,7 +75,7 @@ export const storeToken = internalMutation({
 
     // Update the existing token if user is present.
     if (existingUserToken) {
-      console.log(`Updating token for user: ${user._id}`);
+      console.debug(`Updating token for user: ${user._id}`);
       return await ctx.db.patch(existingUserToken._id, {
         lin_access_token: args.data.access_token,
         lin_token_expiry: args.data.expires_in,
@@ -81,7 +83,7 @@ export const storeToken = internalMutation({
     }
 
     // Insert a new token record if not present.
-    console.log(`Inserting new token for user: ${user._id}`);
+    console.debug(`Inserting new token for user: ${user._id}`);
     return await ctx.db.insert("usersToken", {
       userId: user._id,
       lin_access_token: args.data.access_token,
@@ -108,7 +110,7 @@ export const getUserToken = query({
     const userRecord = await ctx.db
       .query("usersToken")
       .withIndex("by_userDocId", (q) => q.eq("userId", user._id))
-      .unique();
+      .first();
 
     return userRecord;
   },
@@ -143,9 +145,9 @@ export const deleteUserToken = mutation({
  **/
 export async function userQuery(
   ctx: QueryCtx,
-  clerkUserId: string
+  clerkUserId: string,
 ): Promise<Doc<"users"> | null> {
-  console.log(`Querying user by token: ${clerkUserId}`);
+  console.debug(`Querying user by token: ${clerkUserId}`);
   return await ctx.db
     .query("users")
     .withIndex("by_token", (q) => q.eq("tokenIdentifier", clerkUserId))
@@ -160,9 +162,9 @@ export async function userQuery(
  */
 export async function userById(
   ctx: QueryCtx,
-  id: Id<"users">
+  id: Id<"users">,
 ): Promise<Doc<"users"> | null> {
-  console.log(`Querying user by ID: ${id}`);
+  console.debug(`Querying user by ID: ${id}`);
   return await ctx.db.get(id);
 }
 
@@ -172,9 +174,9 @@ export async function userById(
  * @returns {Promise<Doc<"users"> | null>} The current user's document or null if not authenticated.
  */
 export async function getCurrentUser(
-  ctx: QueryCtx
+  ctx: QueryCtx,
 ): Promise<Doc<"users"> | null> {
-  console.log("Retrieving current user");
+  console.debug("Retrieving current user");
   const identity = await ctx.auth.getUserIdentity();
 
   if (!identity) {
@@ -191,9 +193,9 @@ export async function getCurrentUser(
  * @throws {Error} If no current user can be retrieved.
  */
 export async function mustGetCurrentUser(ctx: QueryCtx): Promise<Doc<"users">> {
-  console.log("Ensuring a current user is available");
+  console.debug("Ensuring a current user is available");
   const userRecord = await getCurrentUser(ctx);
-  if (!userRecord) throw new Error("Can't get current user");
+  if (!userRecord) throw new Error("Can't get current user, can be unauth req");
   return userRecord;
 }
 
@@ -206,7 +208,7 @@ export async function mustGetCurrentUser(ctx: QueryCtx): Promise<Doc<"users">> {
 export const getUserThroughEmail = query({
   args: { userEmail: v.string() },
   handler: async (ctx, arg) => {
-    console.log(`Querying user details through email: ${arg.userEmail}`);
+    console.debug(`Querying user details through email: ${arg.userEmail}`);
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       console.warn("User is not authorized");
@@ -217,5 +219,12 @@ export const getUserThroughEmail = query({
       .filter((q) => q.eq(q.field("email"), arg.userEmail))
       .first();
     return userDetails;
+  },
+});
+
+export const getUserCreditToken = query({
+  async handler(ctx) {
+    const user = await mustGetCurrentUser(ctx);
+    return user?.creditToken;
   },
 });

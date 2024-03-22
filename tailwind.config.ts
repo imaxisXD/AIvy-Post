@@ -21,8 +21,13 @@ const config = {
       fontFamily: {
         urban: "var(--font-urban)",
         default: "var(--font-gorst)",
+        satoshi: "var(--font-satoshi)",
       },
       colors: {
+        theme: {
+          primary: "#9333EA",
+          secondary: "#D8B4FE",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

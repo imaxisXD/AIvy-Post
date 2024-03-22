@@ -27,7 +27,7 @@ export const insertCampaignData = mutation({
       args;
     try {
       const user = await mustGetCurrentUser(ctx);
-      console.log(`Creating Campaign for user: ${user._id} and ${user.email}`);
+      console.debug(`Creating Campaign for user: ${user._id} and ${user.email}`);
       const slug = await getUniqueSlug(ctx, name);
       const status = getCampaignStatus(startDate, endDate);
 
@@ -43,7 +43,7 @@ export const insertCampaignData = mutation({
         campaignIsActive: status || "err",
       });
 
-      console.log(
+      console.debug(
         `Succesfully created the Campaign: ${name} and ID: ${insertedCampaignId} for the User-ID: ${user._id} and User-Email: ${user.email}`
       );
       return {
@@ -90,7 +90,7 @@ export const getCurrentUserActiveCampaigns = query({
     const user = await getCurrentUser(ctx);
 
     if (!user) {
-      console.log("New user, havent created any campaigns");
+      console.debug("New user, havent created any campaigns");
       return null;
     }
 
@@ -101,6 +101,7 @@ export const getCurrentUserActiveCampaigns = query({
       .collect();
 
     if (campaignList.length == 0) {
+      console.debug("No active campaigns");
       return null;
     }
     return campaignList;
@@ -136,8 +137,9 @@ export function getCampaignStatus(startDate: string, endDate: string) {
   try {
     const startDateObj = Date.parse(startDate);
     const endDateObj = Date.parse(endDate);
+    console.debug("Current Date", new Date());
     const now = new Date().getTime();
-
+    console.debug("Date", startDateObj, endDateObj, now);
     if (startDateObj <= now && endDateObj >= now) {
       return "active";
     } else if (startDateObj <= now && endDateObj < now) {
@@ -149,7 +151,7 @@ export function getCampaignStatus(startDate: string, endDate: string) {
     }
     return "error";
   } catch (error: unknown) {
-    console.log("error", error);
+    console.debug("error", error);
   }
 }
 

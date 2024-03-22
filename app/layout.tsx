@@ -8,7 +8,12 @@ const gorst = localFont({
   src: "../fonts/gorst.ttf",
   display: "swap",
   variable: "--font-gorst",
-  style: "normal",
+});
+
+const satoshi = localFont({
+  src: "../fonts/satoshi.ttf",
+  display: "swap",
+  variable: "--font-satoshi",
 });
 
 const urban = Urbanist({
@@ -31,7 +36,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${gorst.className} ${urban.variable}`}>{children}</body>
+      <body
+        className={`${gorst.className} ${urban.variable} ${satoshi.variable}`}
+      >
+        {children}
+      </body>
       <Toaster />
     </html>
   );

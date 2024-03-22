@@ -18,7 +18,7 @@ export function convertTimeToUTC(
   const parsedTime = parse(time, "h:mm a", new Date());
   const formattedTime = format(parsedTime, "HH:mm:ss");
 
-  console.log(
+  console.debug(
     "API Logs | Time and start date and timezon of the user: ",
     time,
     startDate,
@@ -55,4 +55,32 @@ export function getRandomColor() {
 
 export async function getAuthToken() {
   return (await auth().getToken({ template: "convex" })) ?? undefined;
+}
+
+export function abbreviateNumber(number: number) {
+  const SI_SYMBOL = ["", "K", "M", "B", "T"];
+
+  // Find the index of the appropriate suffix
+  const tier = (Math.log10(Math.abs(number)) / 3) | 0;
+
+  // If tier is 0, return the original number
+  if (tier === 0) return number;
+
+  // Get the suffix and adjust the number
+  const suffix = SI_SYMBOL[tier];
+  const scale = Math.pow(10, tier * 3);
+  const scaled = number / scale;
+
+  // Check if the scaled number is an integer
+  const isInteger = scaled % 1 === 0;
+
+  // Format the number appropriately
+  let formattedNumber;
+  if (isInteger) {
+    formattedNumber = scaled.toFixed(0);
+  } else {
+    formattedNumber = scaled.toFixed(1);
+  }
+
+  return formattedNumber + suffix;
 }

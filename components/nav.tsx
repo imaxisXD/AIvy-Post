@@ -9,9 +9,10 @@ import {
 } from "lucide-react";
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Separator } from "./ui/separator";
 import { CampaignNavList } from "./campaign-nav-list";
+import Token from "./token";
+import AppLogo from "./logo";
 
 export default function Nav() {
   const segments = useSelectedLayoutSegments();
@@ -48,7 +49,7 @@ export default function Nav() {
   return (
     <nav className="text-black">
       <button
-        className="fixed z-20 right-5 top-7 sm:hidden"
+        className="fixed right-5 top-7 z-20 sm:hidden"
         onClick={() => setShowSidebar(!showSidebar)}
       >
         <Menu width={20} />
@@ -58,8 +59,8 @@ export default function Nav() {
           showSidebar ? "w-full translate-x-0" : "-translate-x-full"
         } fixed z-10 flex h-full flex-col justify-between bg-stone-100 p-4 transition-all sm:w-60 sm:translate-x-0`}
       >
-        <div className="grid gap-2">
-          <div className="flex items-center space-x-2 rounded-lg px-2 py-1.5">
+        <div className="grid gap-1">
+          <div className="flex items-center space-x-1 rounded-lg px-1 py-1.5">
             <a
               href="https://vercel.com/templates/next.js/platforms-starter-kit"
               target="_blank"
@@ -67,21 +68,13 @@ export default function Nav() {
               className="rounded-lg p-1.5 hover:bg-stone-200 
               "
             >
-              <svg
-                width="26"
-                viewBox="0 0 76 65"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-black "
-              >
-                <path
-                  d="M37.5274 0L75.0548 65H0L37.5274 0Z"
-                  fill="currentColor"
-                />
-              </svg>
+              <AppLogo />
             </a>
-            <div className="h-6 rotate-[30deg] border-l border-stone-400 " />
-            <Link href="/" className="rounded-lg p-2 hover:bg-stone-200 ">
+            <h1 className="font-satoshi text-xl font-extrabold text-theme-primary">
+              LinkedInFy
+            </h1>
+
+            {/* <Link href="/" className="rounded-lg p-2 hover:bg-stone-200 ">
               <Image
                 src="/logo.png"
                 width={24}
@@ -89,17 +82,17 @@ export default function Nav() {
                 alt="Logo"
                 className=""
               />
-            </Link>
+            </Link> */}
           </div>
           <div className="grid gap-1">
             <Link
               scroll={true}
               key={"campaign"}
               href="/dashboard/campaign"
-              className="group border-[#e698ff] font-medium text-purple-900 background-animate border-opacity-80 bg-gradient-to-r from-[#FDCBF1] to-[#E0D1F7] border flex items-center space-x-3 rounded-md px-2 py-1.5 transition-all duration-150 ease-in-out shadow-[#e598ff7b] shadow-inner drop-shadow-md hover:bg-gradient-to-t hover:font-semibold active:font-extrabold"
+              className="background-animate group flex items-center space-x-3 rounded-md border border-[#e698ff] border-opacity-80 bg-gradient-to-r from-[#FDCBF1] to-[#E0D1F7] px-2 py-1.5 font-medium text-purple-900 shadow-inner shadow-[#e598ff7b] drop-shadow-md transition-all duration-150 ease-in-out hover:bg-gradient-to-t hover:font-semibold active:font-extrabold"
             >
               <SquarePen width={18} strokeWidth={2} />
-              <span className="text-sm font-urban tracking-wide drop-shadow-md shadow-purple-950">
+              <span className="font-urban text-sm tracking-wide shadow-purple-950 drop-shadow-md">
                 New Campaign
               </span>
             </Link>
@@ -110,8 +103,8 @@ export default function Nav() {
                 href={href}
                 className={`flex items-center space-x-3 ${
                   isActive
-                    ? "border-[#e698ff] border-b text-purple-700 bg-white "
-                    : "text-stone-600 hover:text-black hover:bg-stone-200"
+                    ? "border-b border-[#e698ff] bg-white text-purple-700 "
+                    : "text-stone-600 hover:bg-stone-200 hover:text-black"
                 } rounded-lg px-2 py-1.5 transition-all duration-150 ease-in-out`}
               >
                 {icon}
@@ -120,15 +113,12 @@ export default function Nav() {
             ))}
           </div>
           <Separator className="" />
-          <span className="text-xs text-stone-500 pl-2 pt-2 flex items-center justify-start gap-3">
+          <span className="flex items-center justify-start gap-3 pl-2 pt-2 text-xs text-stone-500">
             CAMPAIGNS
           </span>
           <CampaignNavList />
         </div>
-        <div>
-          <div className="my-2 border-t border-stone-200" />
-          <h1>Hellllllllloooooo</h1>
-        </div>
+        <Token />
       </div>
     </nav>
   );

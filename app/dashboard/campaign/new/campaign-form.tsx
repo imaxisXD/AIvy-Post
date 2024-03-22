@@ -115,7 +115,7 @@ export default function CampaignForm() {
                 variant={"outline"}
                 className={cn(
                   "w-[300px] justify-start drop-shadow-sm text-left font-normal text-gray-700 px-3 py-1",
-                  !date && "text-gray-700"
+                  !date && "text-gray-700",
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />

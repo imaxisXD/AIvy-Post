@@ -6,20 +6,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { api } from "@/convex/_generated/api";
-import { useUser } from "@clerk/clerk-react";
-import { useConvexAuth, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { Puzzle, Settings2, Square } from "lucide-react";
 import Link from "next/link";
 import { useSelectedLayoutSegments } from "next/navigation";
 
 function CampaignNavList() {
-  const { isLoading, isAuthenticated } = useConvexAuth();
-  const { user } = useUser();
-  console.log("User", user);
-  console.log("Auth", isAuthenticated);
   const CampaignArray = useQuery(api.campaign.getCurrentUserActiveCampaigns);
   const segments = useSelectedLayoutSegments();
-  console.log(segments);
 
   if (CampaignArray)
     return (
@@ -39,14 +33,24 @@ function CampaignNavList() {
               </AccordionTrigger>
               <AccordionContent className="flex flex-col gap-1 items-start justify-center pl-5 text-sm font-medium">
                 <Link
-                  className="flex items-center justify-start gap-2 text-sm w-full px-2 py-1 rounded-md hover:bg-purple-200 transition-all duration-150 ease-in-out"
+                  className={`${
+                    segments[2] === "create" &&
+                    segments[1] === `${campaign?.name}-${campaign?.campaignId}`
+                      ? "border-[#e698ff] border-b text-purple-600 bg-purple-100"
+                      : "hover:bg-purple-200"
+                  } flex items-center justify-start gap-2 text-sm w-full px-2 py-1 rounded-md  transition-all duration-150 ease-in-out`}
                   href={`/dashboard/campaign/${campaign?.name}-${campaign?.campaignId}/create`}
                 >
                   <Puzzle width={18} strokeWidth={1.7} />
                   Create
                 </Link>
                 <Link
-                  className="flex items-center justify-start gap-2 text-sm w-full px-2 py-1 rounded-md hover:bg-purple-200 transition-all duration-150 ease-in-out"
+                  className={`${
+                    segments[2] === "setup" &&
+                    segments[1] === `${campaign?.name}-${campaign?.campaignId}`
+                      ? "border-[#e698ff] border-b text-purple-600 bg-purple-100"
+                      : "hover:bg-purple-200"
+                  } flex items-center justify-start gap-2 text-sm w-full px-2 py-1 rounded-md  transition-all duration-150 ease-in-out`}
                   href={`/dashboard/campaign/${campaign?.name}-${campaign?.campaignId}/setup`}
                 >
                   <Settings2 width={18} strokeWidth={1.7} />

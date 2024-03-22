@@ -8,7 +8,7 @@ function UnLinkedbutton() {
   const LoadingIcon = () => (
     <svg
       aria-hidden="true"
-      className="w-5 h-5 text-white animate-spin fill-[#ffadb0]"
+      className="w-5 h-5 text-white animate-spin fill-[#b93733]"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@ function UnLinkedbutton() {
     <button
       disabled={pending}
       aria-disabled={pending}
-      className="ease-out cursor-pointer duration-200 transition-all border flex gap-2 items-center justify-center hover:border-red-900 hover:bg-red-900 border-[#822025] text-[#ffadb0] bg-red-700 rounded-md px-2 py-1 text-sm shadow-sm w-20 h-8 disabled:bg-red-700/70 disabled:cursor-wait"
+      className="ease-out cursor-pointer duration-200 transition-all border flex gap-2 items-center justify-center bg-white hover:bg-[#fbeaea] border-[#f1c1c0] text-[#b62d2b] rounded-md px-2 py-1 text-sm shadow-sm w-20 h-8 disabled:bg-red-700/70 disabled:cursor-wait"
     >
       {!pending ? (
         <div className="flex gap-2 items-center justify-center" role="button">

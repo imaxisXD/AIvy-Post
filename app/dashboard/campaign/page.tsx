@@ -2,7 +2,7 @@ import CampaignCard from "@/components/campaign-card";
 import { api } from "@/convex/_generated/api";
 import { getAuthToken } from "@/lib/utils";
 import { fetchQuery } from "convex/nextjs";
-import { ExternalLink, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 async function CampaignPage() {
@@ -10,7 +10,7 @@ async function CampaignPage() {
   const allCampaignData = await fetchQuery(
     api.campaign.getCurrentUserCampaigns,
     {},
-    { token }
+    { token },
   );
 
   const activeCampaigns = allCampaignData?.filter((campaign) => {

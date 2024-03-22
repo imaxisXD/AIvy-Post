@@ -24,11 +24,18 @@ export default defineSchema({
   })
     .index("by_userId", ["userId"])
     .index("by_campaignId", ["campaignId"]),
+  campaignPosts: defineTable({
+    campaignId: v.string(),
+    userPostMsg: v.string(),
+    generatedPostMsg: v.string(),
+    done: v.boolean(),
+  }).index("by_campaignId", ["campaignId"]),
   users: defineTable({
     name: v.string(),
     tokenIdentifier: v.string(),
     email: v.string(),
     pictureUrl: v.optional(v.string()),
+    creditToken: v.optional(v.number()),
   })
     .index("by_token", ["tokenIdentifier"])
     .index("by_email", ["email"]),

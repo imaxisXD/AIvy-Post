@@ -1,28 +1,49 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 
 interface StreamingTextareaProps {
   streamedText: string;
+  done: boolean;
 }
 
 const StreamingTextarea: React.FC<StreamingTextareaProps> = ({
   streamedText,
+  done,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaHeight, setTextareaHeight] = useState<string | number>("auto");
   const [iconChange, setIconChange] = useState(false);
 
-  useEffect(() => {
-    const handleTextChange = () => {
-      if (textareaRef.current) {
-        setTextareaHeight(textareaRef.current.scrollHeight + 5);
-      }
-    };
+  const [scrollTop, setScrollTop] = useState<number>(0);
 
+  const handleScroll = useCallback(() => {
+    if (textareaRef.current) {
+      setScrollTop(textareaRef.current.scrollTop);
+    }
+  }, []);
+
+  useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.value = streamedText;
-      handleTextChange();
+      textareaRef.current.style.height = "auto";
+      setTextareaHeight(textareaRef.current.scrollHeight + 5);
+      textareaRef.current.scrollTop = scrollTop;
+      textareaRef.current.addEventListener("scroll", handleScroll);
     }
-  }, [streamedText]);
+
+    return () => {
+      if (textareaRef.current) {
+        textareaRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [streamedText, scrollTop, handleScroll]);
+
+  useEffect(() => {
+    if (done && textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      setTextareaHeight(textareaRef.current.scrollHeight + 5);
+      textareaRef.current.scrollTop = scrollTop;
+    }
+  }, [done, scrollTop]);
 
   const copyToClipboard = async () => {
     setIconChange((p) => !p);
@@ -50,12 +71,9 @@ const StreamingTextarea: React.FC<StreamingTextareaProps> = ({
         ref={textareaRef}
         rows={1}
         className="transition-height w-full resize-none overflow-y-auto rounded-xl border border-gray-300 px-3 py-4 shadow-md outline-none duration-300 ease-in-out focus:border-purple-400"
-        style={{
-          height: textareaHeight,
-        }}
+        style={{ height: textareaHeight }}
         readOnly
       />
-
       <button
         className="absolute right-2 top-2 flex items-center justify-center gap-1 rounded-md bg-gray-200 px-2 py-1 text-xs opacity-0 transition-all duration-300 ease-in-out hover:bg-emerald-200/80 group-hover:opacity-100"
         onClick={copyToClipboard}

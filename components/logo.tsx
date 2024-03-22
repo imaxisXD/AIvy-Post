@@ -1,27 +1,5 @@
-import React from "react";
-
 export default function AppLogo() {
   return (
-    // <svg
-    //   xmlns="http://www.w3.org/2000/svg"
-    //   className="h-14 w-14"
-    //   fill="none"
-    //   viewBox="0 0 54 33"
-    // >
-    //   <path
-    //     fill="#fc5185"
-    //     d="M.115 16.144c0-8.836 7.164-16 16-16h21c8.837 0 16 7.164 16 16v16h-37c-8.836 0-16-7.163-16-16z"
-    //   />
-    //   <path
-    //     fill="#43dde6"
-    //     d="M37.115 6.144h-21c-5.522 0-10 4.477-10 10s4.477 10 10 10h21c5.523 0 10-4.477 10-10s-4.477-10-10-10z"
-    //   />
-    //   <path fill="#364f6b" d="M16.115 21.144a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" />
-    //   <path fill="#f0f0f0" d="M14.115 15.144a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-    //   <path fill="#364f6b" d="M38.115 21.144a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" />
-    //   <path fill="#f0f0f0" d="M36.115 15.144a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-    // </svg>
-
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"

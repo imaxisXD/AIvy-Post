@@ -72,7 +72,7 @@ const InputWithTransition = () => {
 
   const textareaClassName = useMemo(
     () =>
-      `flex-grow relative bg-transparent outline-none resize-none flex items-center justify-center ${
+      `flex-grow px-1 pt-0.5 relative bg-transparent outline-none resize-none flex items-center justify-center ${
         shouldTransition ? "h-32 overflow-y-auto" : "h-8"
       }`,
     [shouldTransition],
@@ -105,10 +105,10 @@ const InputWithTransition = () => {
   );
 
   return (
-    <main className="relative">
+    <section className="relative">
       <form
         onSubmit={handleSubmitHandler}
-        className={`overflow-hidden transition-all duration-300 ease-in-out flex flex-col px-2 py-2 pb-1 bg-white rounded-md border drop-shadow-sm
+        className={`mx-auto flex max-w-[48rem] flex-col overflow-hidden rounded-xl border border-gray-300 bg-white px-2 py-2 pb-1 shadow-md drop-shadow-sm transition-all duration-300 ease-in-out
         ${
           shouldTransition
             ? "items-start justify-center"
@@ -116,8 +116,9 @@ const InputWithTransition = () => {
         }
         `}
       >
-        <div className="flex items-start justify-center w-full h-full gap-3">
+        <div className="flex h-full w-full items-start justify-center gap-3">
           <textarea
+            autoFocus={true}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 handleSubmitHandler(e);
@@ -139,7 +140,7 @@ const InputWithTransition = () => {
             }`}
           >
             Use{" "}
-            <span className="bg-purple-200 px-1 py-0 rounded-sm">
+            <span className="rounded-sm bg-purple-200 px-1 py-0">
               shift + return
             </span>{" "}
             for new line
@@ -151,7 +152,7 @@ const InputWithTransition = () => {
           >
             {post && !post?.done ? (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-5 h-5 border-2 border-purple-200 border-b-transparent rounded-full animate-spin" />
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-purple-200 border-b-transparent" />
               </div>
             ) : (
               <>
@@ -170,7 +171,7 @@ const InputWithTransition = () => {
         </div>
         {shouldTransition && (
           <div
-            className={`w-full bg-white h-4 transition-all duration-300 ease-linear ${
+            className={`h-4 w-full bg-white transition-all duration-300 ease-linear ${
               shouldTransition ? "opactiy-100" : "opacity-0"
             }`}
           />
@@ -179,14 +180,14 @@ const InputWithTransition = () => {
 
       {post && (
         <>
-          <article key={post._id} className=" pt-7">
-            <h3 className=" pb-3 text-purple-400 flex justify-start items-center gap-2">
+          <article key={post._id} className="mx-auto max-w-[48rem] pt-7">
+            <h3 className="flex items-center justify-start gap-2 pb-3 text-purple-500">
               Here is your viral going post
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="w-6 h-6"
+                className="h-6 w-6"
               >
                 <path
                   fillRule="evenodd"
@@ -198,7 +199,10 @@ const InputWithTransition = () => {
             {post &&
               post.generatedPostMsg &&
               post.generatedPostMsg?.length > 0 && (
-                <StreamingTextarea streamedText={post.generatedPostMsg} />
+                <StreamingTextarea
+                  streamedText={post.generatedPostMsg}
+                  done={post.done}
+                />
               )}
           </article>
 
@@ -206,13 +210,13 @@ const InputWithTransition = () => {
             disabled={!post?.done}
             className={`${
               post.done ? "opacity-100" : "opacity-0"
-            } disabled:bg-opacity-75 disabled:cursor-not-allowed fixed bottom-7 right-9 h-10 flex items-center gap-1 justify-center cursor-pointer shadow-md hover:shadow-lg transition-all duration-300 ease-in hover:bg-gradient-to-br border-green-500 border bg-gradient-to-b from-emerald-400 to-emerald-500/95 px-5 rounded-lg text-white`}
+            } fixed bottom-7 right-9 flex h-10 cursor-pointer items-center justify-center gap-1 rounded-lg border border-green-500 bg-gradient-to-b from-emerald-400 to-emerald-500/95 px-5 text-white shadow-md transition-all duration-300 ease-in hover:bg-gradient-to-br hover:shadow-lg disabled:cursor-not-allowed disabled:bg-opacity-75`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="w-5 h-5"
+              className="h-5 w-5"
             >
               <path
                 fillRule="evenodd"
@@ -224,7 +228,7 @@ const InputWithTransition = () => {
           </button>
         </>
       )}
-    </main>
+    </section>
   );
 };
 

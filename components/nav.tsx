@@ -61,28 +61,19 @@ export default function Nav() {
       >
         <div className="grid gap-1">
           <div className="flex items-center space-x-1 rounded-lg px-1 py-1.5">
-            <a
-              href="https://vercel.com/templates/next.js/platforms-starter-kit"
+            <Link
+              href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-lg p-1.5 hover:bg-stone-200 
+              className="flex w-full items-center justify-center rounded-lg p-1 hover:bg-purple-100 
               "
             >
               <AppLogo />
-            </a>
-            <h1 className="font-satoshi text-xl font-extrabold text-theme-primary">
-              LinkedInFy
-            </h1>
-
-            {/* <Link href="/" className="rounded-lg p-2 hover:bg-stone-200 ">
-              <Image
-                src="/logo.png"
-                width={24}
-                height={24}
-                alt="Logo"
-                className=""
-              />
-            </Link> */}
+              <Separator className="h-0.5 w-7 -rotate-[70deg] bg-black" />
+              <h1 className="font-satoshi text-xl font-extrabold text-theme-primary">
+                LinkedInFy
+              </h1>
+            </Link>
           </div>
           <div className="grid gap-1">
             <Link

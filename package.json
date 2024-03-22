@@ -30,7 +30,9 @@
     "convex": "^1.9.1",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
+    "framer-motion": "^11.0.20",
     "lucide-react": "^0.308.0",
+    "mini-svg-data-uri": "^1.4.4",
     "next": "^14.1.0",
     "next-themes": "^0.2.1",
     "react": "^18",
@@ -39,7 +41,7 @@
     "react-select": "^5.8.0",
     "react-timezone-select": "^3.2.3",
     "sonner": "^1.4.0",
-    "tailwind-merge": "^2.2.1",
+    "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "valibot": "^0.28.1"
   },

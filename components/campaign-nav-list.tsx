@@ -26,19 +26,19 @@ function CampaignNavList() {
                   <Square
                     width={15}
                     strokeWidth={1.7}
-                    className="fill-current text-purple-200 stroke-purple-500 "
+                    className="fill-current stroke-purple-500 text-purple-200 "
                   />
                   {campaign?.name}
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-1 items-start justify-center pl-5 text-sm font-medium">
+              <AccordionContent className="flex flex-col items-start justify-center gap-1 pl-5 text-sm font-medium">
                 <Link
                   className={`${
                     segments[2] === "create" &&
                     segments[1] === `${campaign?.name}-${campaign?.campaignId}`
-                      ? "border-[#e698ff] border-b text-purple-600 bg-purple-100"
+                      ? "border-b border-[#e698ff] bg-purple-100 text-purple-600"
                       : "hover:bg-purple-200"
-                  } flex items-center justify-start gap-2 text-sm w-full px-2 py-1 rounded-md  transition-all duration-150 ease-in-out`}
+                  } flex w-full items-center justify-start gap-2 rounded-md px-2 py-1 text-sm transition-all duration-150 ease-in-out`}
                   href={`/dashboard/campaign/${campaign?.name}-${campaign?.campaignId}/create`}
                 >
                   <Puzzle width={18} strokeWidth={1.7} />
@@ -48,9 +48,9 @@ function CampaignNavList() {
                   className={`${
                     segments[2] === "setup" &&
                     segments[1] === `${campaign?.name}-${campaign?.campaignId}`
-                      ? "border-[#e698ff] border-b text-purple-600 bg-purple-100"
+                      ? "border-b border-[#e698ff] bg-purple-100 text-purple-600"
                       : "hover:bg-purple-200"
-                  } flex items-center justify-start gap-2 text-sm w-full px-2 py-1 rounded-md  transition-all duration-150 ease-in-out`}
+                  } flex w-full items-center justify-start gap-2 rounded-md px-2 py-1 text-sm transition-all duration-300 ease-in-out`}
                   href={`/dashboard/campaign/${campaign?.name}-${campaign?.campaignId}/setup`}
                 >
                   <Settings2 width={18} strokeWidth={1.7} />

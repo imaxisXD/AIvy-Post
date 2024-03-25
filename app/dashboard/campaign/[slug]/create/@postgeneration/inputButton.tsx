@@ -4,10 +4,12 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import StreamingTextarea from "@/components/streaming-textarea";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 const InputWithTransition = () => {
   const params = useParams<{ slug: string }>();
   const campaignId = params.slug.split("-")[1];
+  const campaignName = params.slug.split("-")[0];
 
   const send = useMutation(api.postGenration.generatePostGeneration);
   const post = useQuery(api.postGenration.list, {
@@ -177,56 +179,55 @@ const InputWithTransition = () => {
           />
         )}
       </form>
-
-      {post && (
-        <>
-          <article key={post._id} className="mx-auto max-w-[48rem] pt-7">
-            <h3 className="flex items-center justify-start gap-2 pb-3 text-purple-500">
-              Here is your viral going post
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </h3>
-            {post &&
-              post.generatedPostMsg &&
-              post.generatedPostMsg?.length > 0 && (
-                <StreamingTextarea
-                  streamedText={post.generatedPostMsg}
-                  done={post.done}
-                />
-              )}
-          </article>
-
-          <button
-            disabled={!post?.done}
-            className={`${
-              post.done ? "opacity-100" : "opacity-0"
-            } fixed bottom-7 right-9 flex h-10 cursor-pointer items-center justify-center gap-1 rounded-lg border border-green-500 bg-gradient-to-b from-emerald-400 to-emerald-500/95 px-5 text-white shadow-md transition-all duration-300 ease-in hover:bg-gradient-to-br hover:shadow-lg disabled:cursor-not-allowed disabled:bg-opacity-75`}
+      <div className="sticky top-14 z-30 mx-auto mt-7 flex h-14 max-w-[48rem] items-center justify-between rounded-lg border bg-white px-2 pb-3 pt-3 drop-shadow">
+        <h3 className="flex items-center justify-start gap-2 pb-3 text-purple-500">
+          Here is your viral going post
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-6 w-6"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-5 w-5"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12 1.5a.75.75 0 0 1 .75.75V4.5a.75.75 0 0 1-1.5 0V2.25A.75.75 0 0 1 12 1.5ZM5.636 4.136a.75.75 0 0 1 1.06 0l1.592 1.591a.75.75 0 0 1-1.061 1.06l-1.591-1.59a.75.75 0 0 1 0-1.061Zm12.728 0a.75.75 0 0 1 0 1.06l-1.591 1.592a.75.75 0 0 1-1.06-1.061l1.59-1.591a.75.75 0 0 1 1.061 0Zm-6.816 4.496a.75.75 0 0 1 .82.311l5.228 7.917a.75.75 0 0 1-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 0 1-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 0 1-1.247-.606l.569-9.47a.75.75 0 0 1 .554-.68ZM3 10.5a.75.75 0 0 1 .75-.75H6a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 10.5Zm14.25 0a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H18a.75.75 0 0 1-.75-.75Zm-8.962 3.712a.75.75 0 0 1 0 1.061l-1.591 1.591a.75.75 0 1 1-1.061-1.06l1.591-1.592a.75.75 0 0 1 1.06 0Z"
-                clipRule="evenodd"
+            <path
+              fillRule="evenodd"
+              d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </h3>
+        <Link
+          href={`/dashboard/campaign/${campaignName}-${campaignId}/setup`}
+          hidden={!post?.done}
+          className={`${
+            post?.done ? "opacity-100" : "opacity-0"
+          } flex h-8 w-fit cursor-pointer items-center justify-center gap-1 rounded-lg border border-emerald-500 bg-gradient-to-b from-emerald-400 to-emerald-500/95 px-3 text-white shadow-inner shadow-green-400 drop-shadow-md transition-all duration-300 ease-in hover:bg-gradient-to-br hover:shadow-lg disabled:cursor-not-allowed disabled:bg-opacity-75`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-5 w-5 drop-shadow"
+          >
+            <path
+              fillRule="evenodd"
+              d="M12 1.5a.75.75 0 0 1 .75.75V4.5a.75.75 0 0 1-1.5 0V2.25A.75.75 0 0 1 12 1.5ZM5.636 4.136a.75.75 0 0 1 1.06 0l1.592 1.591a.75.75 0 0 1-1.061 1.06l-1.591-1.59a.75.75 0 0 1 0-1.061Zm12.728 0a.75.75 0 0 1 0 1.06l-1.591 1.592a.75.75 0 0 1-1.06-1.061l1.59-1.591a.75.75 0 0 1 1.061 0Zm-6.816 4.496a.75.75 0 0 1 .82.311l5.228 7.917a.75.75 0 0 1-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 0 1-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 0 1-1.247-.606l.569-9.47a.75.75 0 0 1 .554-.68ZM3 10.5a.75.75 0 0 1 .75-.75H6a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 10.5Zm14.25 0a.75.75 0 0 1 .75-.75h2.25a.75.75 0 0 1 0 1.5H18a.75.75 0 0 1-.75-.75Zm-8.962 3.712a.75.75 0 0 1 0 1.061l-1.591 1.591a.75.75 0 1 1-1.061-1.06l1.591-1.592a.75.75 0 0 1 1.06 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span className="drop-shadow">Start Campaign</span>
+        </Link>
+      </div>
+      {post && (
+        <article key={post._id} className="mx-auto max-w-[48rem] pt-7">
+          {post &&
+            post.generatedPostMsg &&
+            post.generatedPostMsg?.length > 0 && (
+              <StreamingTextarea
+                streamedText={post.generatedPostMsg}
+                done={post.done}
               />
-            </svg>
-            Start Campaign
-          </button>
-        </>
+            )}
+        </article>
       )}
     </section>
   );

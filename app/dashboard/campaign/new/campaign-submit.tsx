@@ -10,10 +10,10 @@ function CampaignSubmitButton() {
     <button
       disabled={pending}
       type="submit"
-      className="w-36 h-[30] flex items-center justify-center px-3 mt-4 py-1.5 rounded-md bg-gradient-to-b from-blue-500 to-blue-600 text-white focus:ring-2 focus:ring-purple-400 hover:shadow-md hover:bg-gradient-to-b hover:from-blue-500/95 hover:to-blue-600/95 transition-all duration-200 disabled:bg-gradient-to-b disabled:from-blue-400 disabled:to-blue-500 disabled:cursor-wait"
+      className="mt-4 flex h-[30] w-36 items-center justify-center rounded-md bg-gradient-to-b from-purple-500 to-purple-600 px-3 py-1.5 text-white transition-all duration-300 hover:bg-gradient-to-b hover:from-purple-500/95 hover:to-purple-600/95 hover:shadow-md focus:ring-2 focus:ring-purple-200 disabled:cursor-wait disabled:bg-gradient-to-b disabled:from-purple-400/55 disabled:to-purple-500/55"
     >
-      <span className="drop-shadow-md text-white text-sm">
-        {pending ? <Loader2 className="animate-spin h-5" /> : "Create campaign"}
+      <span className="text-sm text-white drop-shadow-md">
+        {pending ? <Loader2 className="h-5 animate-spin" /> : "Create campaign"}
       </span>
     </button>
   );

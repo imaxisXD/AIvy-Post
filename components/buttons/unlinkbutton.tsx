@@ -5,48 +5,22 @@ import { useFormStatus } from "react-dom";
 function UnLinkedbutton() {
   const { pending } = useFormStatus();
 
-  const LoadingIcon = () => (
-    <svg
-      aria-hidden="true"
-      className="w-5 h-5 text-white animate-spin fill-[#b93733]"
-      viewBox="0 0 100 101"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        aria-hidden="true"
-        viewBox="0 0 100 101"
-      >
-        <path
-          fill="currentColor"
-          d="M100 50.59c0 27.615-22.386 50.001-50 50.001s-50-22.386-50-50 22.386-50 50-50 50 22.386 50 50Zm-90.919 0c0 22.6 18.32 40.92 40.919 40.92 22.599 0 40.919-18.32 40.919-40.92 0-22.598-18.32-40.918-40.919-40.918-22.599 0-40.919 18.32-40.919 40.919Z"
-        />
-        <path
-          fill="currentFill"
-          d="M93.968 39.04c2.425-.636 3.894-3.128 3.04-5.486A50 50 0 0 0 41.735 1.279c-2.474.414-3.922 2.919-3.285 5.344.637 2.426 3.12 3.849 5.6 3.484a40.916 40.916 0 0 1 44.131 25.769c.902 2.34 3.361 3.802 5.787 3.165Z"
-        />
-      </svg>
-    </svg>
-  );
-
   return (
     <button
       disabled={pending}
       aria-disabled={pending}
-      className="ease-out cursor-pointer duration-200 transition-all border flex gap-2 items-center justify-center bg-white hover:bg-[#fbeaea] border-[#f1c1c0] text-[#b62d2b] rounded-md px-2 py-1 text-sm shadow-sm w-20 h-8 disabled:bg-red-700/70 disabled:cursor-wait"
+      className="flex h-8 w-20 cursor-pointer items-center justify-center gap-2 rounded-md border border-[#f1c1c0] bg-white px-2 py-1 text-sm text-[#b62d2b] shadow-sm transition-all duration-200 ease-out hover:bg-[#fbeaea] disabled:cursor-wait disabled:bg-red-700/70"
     >
       {!pending ? (
-        <div className="flex gap-2 items-center justify-center" role="button">
+        <div className="flex items-center justify-center gap-2" role="button">
           <Link2OffIcon className="h-4 w-4" />
           <span>Unlink</span>
         </div>
       ) : (
-        <div role="status" className="flex gap-2 items-center justify-center">
+        <div role="status" className="flex items-center justify-center gap-2">
           <svg
             aria-hidden="true"
-            className="w-5 h-5 text-gray-200 animate-spin  fill-red-700"
+            className="h-5 w-5 animate-spin fill-red-700  text-gray-200"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +34,6 @@ function UnLinkedbutton() {
               fill="currentFill"
             />
           </svg>
-          {/* <LoadingIcon /> */}
           <span className="sr-only">Unlinking...</span>
         </div>
       )}

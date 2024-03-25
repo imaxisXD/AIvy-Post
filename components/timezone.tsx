@@ -1,12 +1,11 @@
 "use client";
-
 import { ChangeEvent, useState } from "react";
 import { Label } from "./ui/label";
 import { ITimezone, useTimezoneSelect } from "react-timezone-select";
 
 function Timezone() {
   const [timezone, setTimezone] = useState<ITimezone>(
-    Intl.DateTimeFormat().resolvedOptions().timeZone
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
   );
   const { options, parseTimezone } = useTimezoneSelect({});
 
@@ -15,10 +14,10 @@ function Timezone() {
   };
 
   return (
-    <div className="flex flex-col gap-1.5 py-3 mb-1 ">
+    <div className="mb-1 flex flex-col gap-1.5 py-3 ">
       <Label
         htmlFor="timezone"
-        className="font-urban font-medium text-[15px] w-full"
+        className="w-full font-urban text-[15px] font-medium"
       >
         Timezone
       </Label>
@@ -28,7 +27,7 @@ function Timezone() {
         required
         value={parseTimezone(timezone).value}
         onChange={handleTimezoneChange} // Update the state when the user selects a different option
-        className="text-sm hover:bg-accent cursor-pointer shadow-sm text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md max-w-96 focus:outline-none focus:ring-1 focus:ring-[#d8d8de] transition-all duration-150 ease-linear"
+        className="max-w-96 cursor-pointer rounded-md border border-[#e3e3e3] px-3 py-1.5 text-sm text-gray-700 shadow-sm transition-all duration-150 ease-linear hover:bg-accent focus:outline-none focus:ring-1 focus:ring-[#d8d8de]"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>

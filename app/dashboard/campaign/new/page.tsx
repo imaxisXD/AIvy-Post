@@ -1,13 +1,15 @@
-import CampaignForm from "./campaign-form";
-
+import dynamic from "next/dynamic";
+const CampaignForm = dynamic(() => import("./campaign-form"), {
+  ssr: false,
+});
 function NewCampaignPage() {
   return (
-    <section className="bg-[#eeeff1] mt-7 w-[80%] rounded-lg p-0.5 flex flex-col items-center justify-center">
-      <div className="px-10 bg-[#fefffe] rounded-t-lg border-t border-x border-[#dedee3] w-full">
-        <h1 className="font-urban font-semibold text-lg pt-10 pb-1">
+    <section className="mt-7 flex w-[80%] flex-col items-center justify-center rounded-lg bg-[#eeeff1] p-0.5">
+      <div className="w-full rounded-t-lg border-x border-t border-[#dedee3] bg-[#fefffe] px-10">
+        <h1 className="pb-1 pt-10 font-urban text-lg font-semibold">
           Create a new campaign
         </h1>
-        <p className="text-sm text-slate-600 pb-7">
+        <p className="pb-7 text-sm text-slate-600">
           Your campaign will have post on your behalf to your social account.
           <br /> You can manage the duration of the campaign.
         </p>

@@ -17,11 +17,12 @@ import Timezone from "@/components/timezone";
 import CampaignSubmitButton from "./campaign-submit";
 
 export default function CampaignForm() {
-  const today = new Date();
-  const maxDate = addDays(today, 30);
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1); // Set the date to tomorrow
+  const maxDate = addDays(tomorrow, 30); // Set the maximum date to 30 days after tomorrow
 
   const [date, setDate] = useState<DateRange | undefined>({
-    from: today,
+    from: tomorrow,
     to: maxDate,
   });
 
@@ -81,12 +82,12 @@ export default function CampaignForm() {
   return (
     <form
       action={serverAction}
-      className="border-[#d8d8de] border pt-4 pb-6 rounded-b-lg border-x flex-col gap-3 items-start justify-between bg-[#fefffe] px-10 w-full drop-shadow-md"
+      className="w-full flex-col items-start justify-between gap-3 rounded-b-lg border border-x border-[#d8d8de] bg-[#fefffe] px-10 pb-6 pt-4 drop-shadow-md"
     >
-      <div className="flex flex-col gap-1.5 py-3 mb-1">
+      <div className="mb-1 flex flex-col gap-1.5 py-3">
         <Label
           htmlFor="name"
-          className="font-urban font-medium text-[15px] w-full"
+          className="w-full font-urban text-[15px] font-medium"
         >
           Campaign name
         </Label>
@@ -100,12 +101,12 @@ export default function CampaignForm() {
           minLength={3}
           maxLength={10}
           required
-          className="text-sm drop-shadow-sm max-w-52 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-150 ease-linear"
+          className="max-w-52 rounded-md border border-[#e3e3e3] px-3 py-1.5 text-sm text-gray-700 drop-shadow-sm transition-all duration-150 ease-linear focus:outline-none focus:ring-1 focus:ring-green-400 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
         />
       </div>
-      <div className="flex flex-col gap-1.5 py-3 mb-1">
+      <div className="mb-1 flex flex-col gap-1.5 py-3">
         <div className={cn("grid gap-1")}>
-          <Label className="font-urban font-medium text-[15px] w-full">
+          <Label className="w-full font-urban text-[15px] font-medium">
             Campaign duration
           </Label>
           <Popover>
@@ -114,7 +115,7 @@ export default function CampaignForm() {
                 id="date"
                 variant={"outline"}
                 className={cn(
-                  "w-[300px] justify-start drop-shadow-sm text-left font-normal text-gray-700 px-3 py-1",
+                  "w-[300px] justify-start px-3 py-1 text-left font-normal text-gray-700 drop-shadow-sm",
                   !date && "text-gray-700",
                 )}
               >
@@ -142,9 +143,9 @@ export default function CampaignForm() {
                 onSelect={setDate}
                 numberOfMonths={2}
                 disabled={{
-                  before: today,
+                  before: tomorrow,
                 }}
-                fromMonth={today}
+                fromMonth={tomorrow}
                 max={30}
                 min={3}
               />
@@ -164,10 +165,10 @@ export default function CampaignForm() {
         name="endDate"
         value={date?.to ? format(date.to, "yyyy-MM-dd") : ""}
       />
-      <div className="flex flex-col gap-1.5 py-3 mb-1">
+      <div className="mb-1 flex flex-col gap-1.5 py-3">
         <Label
           htmlFor="postingTime"
-          className="font-urban font-medium text-[15px] w-full"
+          className="w-full font-urban text-[15px] font-medium"
         >
           Posting time
         </Label>
@@ -175,7 +176,7 @@ export default function CampaignForm() {
           name="postingTime"
           id="postingTime"
           required
-          className="text-sm shadow-sm hover:bg-accent cursor-pointer text-gray-700 px-3 py-1.5 border border-[#e3e3e3] rounded-md w-28 focus:outline-none focus:ring-1 focus:ring-[#d8d8de] transition-all duration-150 ease-linear"
+          className="w-28 cursor-pointer rounded-md border border-[#e3e3e3] px-3 py-1.5 text-sm text-gray-700 shadow-sm transition-all duration-150 ease-linear hover:bg-accent focus:outline-none focus:ring-1 focus:ring-[#d8d8de]"
         >
           <option value="" disabled selected hidden>
             Click here
@@ -188,7 +189,7 @@ export default function CampaignForm() {
         </select>
       </div>
       <Timezone />
-      <div className="flex justify-end items-center w-full">
+      <div className="flex w-full items-center justify-end">
         <CampaignSubmitButton />
       </div>
     </form>

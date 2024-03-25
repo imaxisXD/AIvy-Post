@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Urbanist } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/react";
 
 const gorst = localFont({
   src: "../fonts/gorst.ttf",
@@ -36,6 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Analytics />
       <body
         className={`${gorst.className} ${urban.variable} ${satoshi.variable}`}
       >

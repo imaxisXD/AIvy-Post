@@ -47,7 +47,7 @@ export default function Nav() {
   }, [pathname]);
 
   return (
-    <nav className="text-black">
+    <nav className="text-black shadow-inner">
       <button
         className="fixed right-5 top-7 z-20 sm:hidden"
         onClick={() => setShowSidebar(!showSidebar)}
@@ -57,7 +57,7 @@ export default function Nav() {
       <div
         className={`transform ${
           showSidebar ? "w-full translate-x-0" : "-translate-x-full"
-        } fixed z-10 flex h-full flex-col justify-between bg-stone-100 p-4 transition-all sm:w-60 sm:translate-x-0`}
+        } fixed z-10 flex h-full flex-col justify-between bg-stone-100 p-4 shadow-inner transition-all sm:w-60 sm:translate-x-0`}
       >
         <div className="grid gap-1">
           <div className="flex items-center space-x-1 rounded-lg px-1 py-1.5">
@@ -103,7 +103,6 @@ export default function Nav() {
               </Link>
             ))}
           </div>
-          <Separator className="" />
           <span className="flex items-center justify-start gap-3 pl-2 pt-2 text-xs text-stone-500">
             CAMPAIGNS
           </span>

@@ -1,15 +1,31 @@
-export default function AppLogo() {
+import { cn } from "@/lib/utils";
+import React from "react";
+import { SVGProps } from "react";
+
+interface AppLogoProps extends SVGProps<SVGSVGElement> {
+  height?: number | string;
+  width?: number | string;
+}
+
+const AppLogo: React.FC<AppLogoProps> = ({
+  height = 288,
+  width = 288,
+  ...props
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      className="h-14 w-14"
+      className={cn("h-14 w-14", props.className)}
       viewBox="0 0 288 288"
+      height={height}
+      width={width}
+      {...props}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="288"
-        height="288"
+        width={width}
+        height={height}
         fill="none"
         viewBox="0 0 54 33"
       >
@@ -46,4 +62,6 @@ export default function AppLogo() {
       </svg>
     </svg>
   );
-}
+};
+
+export default AppLogo;

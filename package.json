@@ -9,12 +9,16 @@
     "lint": "next lint",
     "dev:init": "convex dev --until-success --run init",
     "dev:frontend": "next dev",
-    "dev:backend": "convex dev"
+    "dev:backend": "convex dev",
+    "slicemachine": "start-slicemachine"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.17.2",
     "@clerk/nextjs": "^4.29.6",
     "@nanostores/react": "github:ai/react",
+    "@prismicio/client": "^7.4.0",
+    "@prismicio/next": "^1.5.0",
+    "@prismicio/react": "^2.7.3",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
@@ -47,6 +51,7 @@
     "valibot": "^0.28.1"
   },
   "devDependencies": {
+    "@slicemachine/adapter-next": "^0.3.38",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -56,6 +61,7 @@
     "postcss": "^8",
     "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
+    "slice-machine-ui": "^1.26.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

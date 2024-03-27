@@ -1,6 +1,14 @@
+"use client";
+import { useEffect } from "react";
 import InputWithTransition from "./inputButton";
 
 export default function PostGeneration() {
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
   return (
     <section className="w-full">
       <h1 className="mx-auto max-w-[48rem] pb-0.5 font-urban text-3xl font-bold text-black">

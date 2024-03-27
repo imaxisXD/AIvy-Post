@@ -39,6 +39,7 @@
 @layer base {
   * {
     @apply border-border;
+    @apply focus:outline-2 focus:outline-offset-1 focus:outline-purple-400;
   }
   body {
     @apply bg-background text-foreground;

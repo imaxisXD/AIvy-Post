@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from "react";
+import { toast } from "sonner";
 
 interface StreamingTextareaProps {
   streamedText: string;
@@ -13,43 +14,35 @@ const StreamingTextarea: React.FC<StreamingTextareaProps> = ({
   const [textareaHeight, setTextareaHeight] = useState<string | number>("auto");
   const [iconChange, setIconChange] = useState(false);
 
-  const [scrollTop, setScrollTop] = useState<number>(0);
+  const adjustHeight = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
 
-  const handleScroll = useCallback(() => {
-    if (textareaRef.current) {
-      setScrollTop(textareaRef.current.scrollTop);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.value = streamedText;
-      textareaRef.current.style.height = "auto";
-      setTextareaHeight(textareaRef.current.scrollHeight + 5);
-      textareaRef.current.scrollTop = scrollTop;
-      textareaRef.current.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (textareaRef.current) {
-        textareaRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [streamedText, scrollTop, handleScroll]);
+    // Reset height temporarily to get the correct scrollHeight value
+    textarea.style.height = "auto";
+    const newHeight = `${textarea.scrollHeight}px`;
+    textarea.style.height = newHeight;
+  };
 
   useEffect(() => {
-    if (done && textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      setTextareaHeight(textareaRef.current.scrollHeight + 5);
-      textareaRef.current.scrollTop = scrollTop;
-    }
-  }, [done, scrollTop]);
+    // Determine how far from the bottom the user currently is before update
+    const previousDistanceFromBottom =
+      document.body.scrollHeight - window.scrollY;
+
+    adjustHeight();
+
+    // After height adjustment (maybe via a small timeout or requestAnimationFrame),
+    // scroll to the new position that maintains the user's relative position
+    const currentDistanceFromBottom = previousDistanceFromBottom;
+    window.scrollTo(0, document.body.scrollHeight - currentDistanceFromBottom);
+  }, [streamedText, done]);
 
   const copyToClipboard = async () => {
     setIconChange((p) => !p);
     if (textareaRef.current) {
       try {
         await navigator.clipboard.writeText(textareaRef.current.value);
+        toast.success("Copied to clipboard");
       } catch (err: any) {
         if (err.name === "NotAllowedError") {
           console.error(
@@ -66,13 +59,13 @@ const StreamingTextarea: React.FC<StreamingTextareaProps> = ({
   };
 
   return (
-    <div className="group relative rounded-xl transition-all duration-300 ease-in-out">
+    <div className="group relative rounded-xl  transition-all duration-300 ease-in-out">
       <textarea
         ref={textareaRef}
-        rows={1}
-        className="transition-height w-full resize-none overflow-y-auto rounded-xl border border-gray-300 px-3 py-4 shadow-md outline-none duration-300 ease-in-out focus:border-purple-400"
-        style={{ height: textareaHeight }}
+        value={streamedText}
         readOnly
+        className="transition-height w-full resize-none overflow-y-auto rounded-xl border border-gray-300 px-3 py-4 shadow-inner outline-none duration-300 ease-in-out focus:border-purple-400"
+        style={{ overflowY: "hidden" }} // Prevent scroll bar from appearing during auto-resize
       />
       <button
         className="absolute right-2 top-2 flex items-center justify-center gap-1 rounded-md bg-gray-200 px-2 py-1 text-xs opacity-0 transition-all duration-300 ease-in-out hover:bg-emerald-200/80 group-hover:opacity-100"

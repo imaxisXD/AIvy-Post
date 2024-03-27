@@ -9,17 +9,29 @@ import {
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { abbreviateNumber } from "@/lib/utils";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 export default function Token() {
   const userCreditToken = useQuery(api.users.getUserCreditToken);
+
+  useEffect(() => {
+    if (userCreditToken != null && userCreditToken <= 0) {
+      console.log("userCreditToken", userCreditToken);
+      toast.error("You don't have enough tokens to post");
+      return;
+    }
+  }, [userCreditToken]);
+
   if (userCreditToken == null) {
     return null;
   }
+
   const formatedCreditToken = abbreviateNumber(userCreditToken);
 
   return (
     <div>
-      <div className="flex items-center justify-between gap-2 w-full">
+      <div className="flex w-full items-center justify-between gap-2">
         <div className="flex items-center justify-center gap-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +39,7 @@ export default function Token() {
             viewBox="0 0 24 24"
             strokeWidth={1.2}
             stroke="currentColor"
-            className="w-5 h-5 text-purple-700 fill-purple-200"
+            className="h-5 w-5 fill-purple-200 text-purple-700"
           >
             <path
               strokeLinecap="round"
@@ -36,13 +48,13 @@ export default function Token() {
             />
           </svg>
           <div className="flex items-center justify-center gap-1">
-            <h1 className="text-sm text-bold">Tokens</h1>
+            <h1 className="text-bold text-sm">Tokens</h1>
             <TooltipProvider delayDuration={200}>
               <Tooltip>
                 <TooltipTrigger>
                   <InfoIcon className="h-3 w-3 fill-purple-100" />
                 </TooltipTrigger>
-                <TooltipContent className="border border-purple-300 ml-3 mb-1">
+                <TooltipContent className="mb-1 ml-3 border border-purple-300">
                   <p>
                     Tokens are used to pay <br /> for your generated content.
                   </p>
@@ -51,14 +63,14 @@ export default function Token() {
             </TooltipProvider>
           </div>
         </div>
-        <span className="text-sm font-urban font-medium">
+        <span className="font-urban text-sm font-medium">
           {formatedCreditToken} / 10K
         </span>
       </div>
       <Progress
         value={userCreditToken}
         max={10000}
-        className="h-1.5 mt-2 border border-purple-500"
+        className="mt-2 h-1.5 border border-purple-500"
       />
     </div>
   );

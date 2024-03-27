@@ -5,7 +5,7 @@ import { fetchQuery } from "convex/nextjs";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 
-async function CampaignPage() {
+async function Home() {
   const token = await getAuthToken();
   const allCampaignData = await fetchQuery(
     api.campaign.getCurrentUserCampaigns,
@@ -39,12 +39,12 @@ async function CampaignPage() {
       </p>
       <Link
         href="/dashboard/campaign/new"
-        className="bg-grid-small-[#6c47ff]/[0.3] group flex h-40 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-purple-600/30 text-sm transition-all duration-150 ease-in-out hover:border-purple-600/50 hover:bg-sky-300/10 "
+        className="group flex h-40 w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-purple-600/30 text-sm transition-all duration-150 ease-in-out bg-grid-small-[#6c47ff]/[0.3] hover:border-purple-600/50 hover:bg-purple-200/10 focus:outline focus:outline-purple-700 "
       >
         <p className="text-slate-600">Get started by creating a new campaign</p>
-        <div className="flex items-center justify-around gap-1 rounded-md border border-opacity-80 bg-[#6c47ff] px-2 py-1 text-white shadow-purple-600 drop-shadow-md transition-all duration-150 ease-in-out group-hover:bg-[#5639cb]">
-          <Plus widths={18} strokeWidth={1.4} />
-          <span>New Campaign</span>
+        <div className="flex items-center justify-around gap-1 rounded-md border border-purple-500 bg-purple-100 px-2 py-1 text-purple-700 shadow-purple-600 drop-shadow-lg transition-all duration-150 ease-in-out group-hover:bg-purple-500 group-hover:text-white">
+          <Plus widths={18} height={18} strokeWidth={1.5} />
+          <span>New campaign</span>
         </div>
       </Link>
 
@@ -103,4 +103,4 @@ async function CampaignPage() {
   );
 }
 
-export default CampaignPage;
+export default Home;

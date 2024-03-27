@@ -18,13 +18,12 @@ const InputWithTransition = () => {
 
   const [inputValue, setInputValue] = useState("");
   const [shouldTransition, setShouldTransition] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, []);
+    if (post && !post?.done) return;
+    setIsLoading(false);
+  }, [post]);
 
   const handleInputChangeLocal = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -60,6 +59,7 @@ const InputWithTransition = () => {
           userInput: inputValue,
           campaignId: campaignId,
         });
+        setIsLoading(true);
         setInputValue("");
         setShouldTransition(false);
       } catch (error) {
@@ -67,6 +67,7 @@ const InputWithTransition = () => {
       }
     } else {
       console.log("No input value provided");
+      setIsLoading(false);
       setInputValue("");
       setShouldTransition(false);
     }
@@ -149,7 +150,7 @@ const InputWithTransition = () => {
           </span>
           <button
             type="submit"
-            disabled={(post && !post?.done) || false}
+            disabled={(post && !post?.done) || isLoading || false}
             className={buttonClassName}
           >
             {post && !post?.done ? (
@@ -179,7 +180,7 @@ const InputWithTransition = () => {
           />
         )}
       </form>
-      <div className="sticky top-14 z-30 mx-auto mt-7 flex h-14 max-w-[48rem] items-center justify-between rounded-lg border bg-white px-2 pb-3 pt-3 drop-shadow">
+      <div className="sticky top-14 z-30 mx-auto mt-7 flex h-14 max-w-[48rem] items-center justify-between bg-white px-2 pb-3 pt-3 ">
         <h3 className="flex items-center justify-start gap-2 pb-3 text-purple-500">
           Here is your viral going post
           <svg

@@ -1,11 +1,10 @@
-import Link from "next/link";
 import * as prismic from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
-import { PrismicText, SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { notFound } from "next/navigation";
+import { PrismicRichText } from "@/components/prismic/prismic-rich-text";
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
@@ -74,11 +73,14 @@ export default async function Page({ params }: any) {
         <h1 className="mb-3 text-3xl font-semibold tracking-tighter text-slate-800 md:text-4xl">
           {article.data.title}
         </h1>
-        <p className="font-serif italic tracking-tighter text-slate-500">
+        <p className="tracking-tighter text-slate-500">
           {dateFormatter.format(date)}
         </p>
 
-        <SliceZone slices={article.data.slices} components={components} />
+        <p className="tracking-tighter text-slate-500">
+          {article.data.description}
+        </p>
+        <PrismicRichText field={article.data.content} components={components} />
       </article>
       {latestArticles.length > 0 && (
         <div className="grid grid-cols-1 justify-items-center gap-16 md:gap-24">

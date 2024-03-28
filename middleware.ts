@@ -11,13 +11,8 @@ export default authMiddleware({
     "/api/preview",
     "/api/revalidate",
   ],
-  ignoredRoutes: [
-    "/",
-    "/blog(.*)",
-    "/api/exit-preview",
-    "/api/preview",
-    "/api/revalidate",
-  ],
+  debug: true,
+  ignoredRoutes: ["/api/exit-preview", "/api/preview", "/api/revalidate"],
 });
 
 export const config = {

@@ -49,3 +49,21 @@
 .transition-height {
   transition: height 0.3s ease-in-out;
 }
+
+.gradient {
+  background-image: radial-gradient(
+    circle,
+    #bfd127,
+    #f5b22a,
+    #ff9255,
+    #ff7a86,
+    #ff75b6,
+    #d58be7,
+    #91a2ff,
+    #2db3ff,
+    #00ccff,
+    #00e1ee,
+    #00f1bd,
+    #5ffb7e
+  );
+}

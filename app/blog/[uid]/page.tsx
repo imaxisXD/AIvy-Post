@@ -1,6 +1,5 @@
 import * as prismic from "@prismicio/client";
 import { PrismicNextLink } from "@prismicio/next";
-
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { notFound } from "next/navigation";
